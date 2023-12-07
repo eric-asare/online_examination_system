@@ -20,7 +20,7 @@ public class RegradeManager {
         
         int requestID = requestcount;
         requestcount++;
-        String path = "requests/" + Integer.toString(studentID) +  "," + Integer.toString(examID) +  ","+ Integer.toString(studentID) +  "," + Integer.toString(requestID);
+        String path = "requests/" + Integer.toString(studentID) +  "," + Integer.toString(examID)  +  "," + Integer.toString(requestID);
         filepaths.add(path);
         String status = "open";
         writeToFile(path, Integer.toString(question_no), requestText, status);
@@ -60,7 +60,7 @@ public class RegradeManager {
               int requestStudentID = Integer.parseInt(parts[2]);
               int requestID = Integer.parseInt(parts[3]);
 
-              String formattedInfo = String.format("Exam ID: %d, Student ID: %d, Request Student ID: %d, Request ID: %d",
+              String formattedInfo = String.format("Exam ID: %d, Student ID: %d, Request ID: %d",
                       examID, studentID, requestStudentID, requestID);
               formattedInfoList.add(formattedInfo);
           }
@@ -75,6 +75,13 @@ public class RegradeManager {
           System.out.println("No requests information available.");
       }
   }
+
+
+  public static void open_request(){
+    // use the scanner approach
+     
+  }
+
 
 
 
