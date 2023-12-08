@@ -1,6 +1,11 @@
+// TODO : Check user input when Next Button is clicked
+
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
-// import jav
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
+
+import java.awt.event.*;
 
 public class examWriter extends JFrame {
 
@@ -9,13 +14,15 @@ public class examWriter extends JFrame {
 	private JRadioButton rdbtnText;
 	private JButton btnNextQuestion;
 	private JButton btnFinish;
-	private ButtonGroup questionType;
+	private ButtonGroup typeGroup;
 
-	private JTextField textField;
-	private JTextField textField_1;
-	private JTextField textField_2;
-	private JTextField textField_3;
-	private JTextField textField_4;
+	private ActionListener typeListener;
+
+	private JTextField weight;
+	private JTextField ans_choice_1;
+	private JTextField ans_choice_2;
+	private JTextField ans_choice_3;
+	private JTextField ans_choice_4;
 
 	private JPanel contentPane;
 	private JPanel selectionPanel;
@@ -24,6 +31,7 @@ public class examWriter extends JFrame {
 	private JPanel nextFinishPanel;
 
 	private JLabel lblQuesNum;
+	private int question_no;
 	private JTextArea writeQuestion;
 	private JLabel lblWeight;
 
@@ -31,10 +39,18 @@ public class examWriter extends JFrame {
 	private JRadioButton rdbtnNewRadioButton_1;
 	private JRadioButton rdbtnNewRadioButton_2;
 	private JRadioButton rdbtnNewRadioButton_3;
+	private ButtonGroup choices;
+
+	private JRadioButton[] ans_buttons;
+	private JTextField[] ans_fields;
+	
 	private JSlider slider;
+
 	private JLabel lblNumOfAns;
 
-	private JTextArea txtrTypeAnswer ;
+	private JTextArea txtrTypeAnswer;
+
+	private examManager exManager;
 	
 
 	public examWriter() {
@@ -59,12 +75,26 @@ public class examWriter extends JFrame {
 		rdbtnText.setBounds(329, 6, 141, 23);
 		selectionPanel.add(rdbtnText);
 
-		questionType = new ButtonGroup();
-		questionType.add(rdbtnMCQ);
-		questionType.add(rdbtnText);
+		typeGroup = new ButtonGroup();
+		typeGroup.add(rdbtnMCQ);
+		typeGroup.add(rdbtnText);
 
-		// typeListener = new ActionListener
+		typeListener = new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				TextPanel.setVisible(rdbtnText.isSelected());
+				MCQPanel.setVisible(rdbtnMCQ.isSelected());
+				nextFinishPanel.setVisible(true);
+
+			}
+		};
+
+
+
+		rdbtnMCQ.addActionListener(typeListener);
+		rdbtnText.addActionListener(typeListener);
 		
+		question_no = 1;
 		lblQuesNum = new JLabel("Question 1");
 		lblQuesNum.setBounds(30, 10, 88, 16);
 		selectionPanel.add(lblQuesNum);
@@ -78,10 +108,10 @@ public class examWriter extends JFrame {
 		lblWeight.setBounds(93, 146, 61, 16);
 		selectionPanel.add(lblWeight);
 		
-		textField = new JTextField();
-		textField.setBounds(148, 141, 130, 26);
-		selectionPanel.add(textField);
-		textField.setColumns(10);
+		weight = new JTextField();
+		weight.setBounds(148, 141, 130, 26);
+		selectionPanel.add(weight);
+		weight.setColumns(10);
 		
 		MCQPanel = new JPanel();
 		MCQPanel.setBounds(158, 305, 500, 139);
@@ -111,26 +141,55 @@ public class examWriter extends JFrame {
 		slider.setMinimum(2);
 		slider.setBounds(143, 6, 190, 29);
 		MCQPanel.add(slider);
+
+		choices = new ButtonGroup();
+		choices.add(rdbtnNewRadioButton);
+		choices.add(rdbtnNewRadioButton_1);
+		choices.add(rdbtnNewRadioButton_2);
+		choices.add(rdbtnNewRadioButton_3);
+
+
+		slider.addChangeListener(new ChangeListener() {
+			@Override
+			public void stateChanged(ChangeEvent e) {
+				int value = slider.getValue();
+				for (int i = 0; i < 4; i++) {
+					ans_buttons[i].setVisible(false);
+					ans_fields[i].setVisible(false);
+				}
+				choices.clearSelection();
+				choices = new ButtonGroup();
+				for (int i = 0; i < value; i++) {
+					choices.add(ans_buttons[i]);
+					ans_buttons[i].setVisible(true);
+					ans_fields[i].setVisible(true);
+				}
+			}
+		});
+
+		// text fields
+		ans_choice_1 = new JTextField();
+		ans_choice_1.setBounds(87, 33, 130, 26);
+		MCQPanel.add(ans_choice_1);
+		ans_choice_1.setColumns(10);
 		
-		textField_1 = new JTextField();
-		textField_1.setBounds(87, 33, 130, 26);
-		MCQPanel.add(textField_1);
-		textField_1.setColumns(10);
+		ans_choice_2 = new JTextField();
+		ans_choice_2.setBounds(87, 65, 130, 26);
+		MCQPanel.add(ans_choice_2);
+		ans_choice_2.setColumns(10);
 		
-		textField_2 = new JTextField();
-		textField_2.setBounds(87, 65, 130, 26);
-		MCQPanel.add(textField_2);
-		textField_2.setColumns(10);
+		ans_choice_3 = new JTextField();
+		ans_choice_3.setBounds(310, 33, 130, 26);
+		MCQPanel.add(ans_choice_3);
+		ans_choice_3.setColumns(10);
 		
-		textField_3 = new JTextField();
-		textField_3.setBounds(310, 33, 130, 26);
-		MCQPanel.add(textField_3);
-		textField_3.setColumns(10);
-		
-		textField_4 = new JTextField();
-		textField_4.setBounds(310, 65, 130, 26);
-		MCQPanel.add(textField_4);
-		textField_4.setColumns(10);
+		ans_choice_4 = new JTextField();
+		ans_choice_4.setBounds(310, 65, 130, 26);
+		MCQPanel.add(ans_choice_4);
+		ans_choice_4.setColumns(10);
+
+		ans_buttons = new JRadioButton[]{rdbtnNewRadioButton, rdbtnNewRadioButton_1, rdbtnNewRadioButton_2, rdbtnNewRadioButton_3};
+		ans_fields = new JTextField[]{ans_choice_1, ans_choice_2, ans_choice_3, ans_choice_4};
 		
 		lblNumOfAns = new JLabel("Number of Answers");
 		lblNumOfAns.setBounds(6, 6, 136, 16);
@@ -155,6 +214,43 @@ public class examWriter extends JFrame {
 		
 		btnFinish = new JButton("Finish");
 		nextFinishPanel.add(btnFinish);
+
+		exManager = new examManager();
+
+		btnNextQuestion.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				//public MCQuestion(String question, String[] answers, int ans_choice, int weight)
+				if (rdbtnMCQ.isSelected()) {
+					String[] answers = new String[slider.getValue()];
+					int ans_choice = -1;
+					for (int i = 0; i < slider.getValue(); i++) {
+						System.out.println(ans_fields[i]);
+						answers[i] = ans_fields[i].getText();
+						if (ans_buttons[i].isSelected()) {
+							ans_choice = i;
+						}
+					}
+					Question q = new MCQuestion(writeQuestion.getText(), answers, ans_choice, Integer.parseInt(weight.getText()));
+					lblQuesNum.setText(String.format("Question %d", ++question_no));
+					exManager.save(q);
+				}
+				//TextQuestion(String question, String answer, int weight)
+				else if (rdbtnText.isSelected()) {
+					Question q = new TextQuestion(writeQuestion.getText(), txtrTypeAnswer.getText(), Integer.parseInt(weight.getText()));
+					lblQuesNum.setText(String.format("Question %d", ++question_no));
+					exManager.save(q);
+				}
+
+				writeQuestion.setText("");
+				weight.setText("");
+				txtrTypeAnswer.setText("");
+				for (int i = 0; i < 4; i++) {
+					ans_fields[i].setText("");
+				}
+				choices.clearSelection();
+			}
+		});
 
 
 		// Hide All Panels Except contentPane
