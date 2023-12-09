@@ -20,4 +20,8 @@ public class TextQuestion extends Question{
   public int getWeight() {
     return weight;
   }
+
+  public String[] getChoices() {
+    return null;
+  }
 }

@@ -1,4 +1,5 @@
 // TODO : Check user input when Next Button is clicked
+// TODO: when teacher clicks finish, let them type time and exam name
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
@@ -119,19 +120,19 @@ public class examWriter extends JFrame {
 		MCQPanel.setLayout(null);
 		
 		rdbtnNewRadioButton = new JRadioButton("");
-		rdbtnNewRadioButton.setBounds(59, 33, 43, 23);
+		rdbtnNewRadioButton.setBounds(59, 33, 20, 23);
 		MCQPanel.add(rdbtnNewRadioButton);
 		
 		rdbtnNewRadioButton_1 = new JRadioButton("");
-		rdbtnNewRadioButton_1.setBounds(59, 68, 43, 23);
+		rdbtnNewRadioButton_1.setBounds(59, 68, 20, 23);
 		MCQPanel.add(rdbtnNewRadioButton_1);
 		
 		rdbtnNewRadioButton_2 = new JRadioButton("");
-		rdbtnNewRadioButton_2.setBounds(270, 33, 28, 23);
+		rdbtnNewRadioButton_2.setBounds(280, 33, 20, 23);
 		MCQPanel.add(rdbtnNewRadioButton_2);
 		
 		rdbtnNewRadioButton_3 = new JRadioButton("");
-		rdbtnNewRadioButton_3.setBounds(270, 68, 28, 23);
+		rdbtnNewRadioButton_3.setBounds(280, 68, 20, 23);
 		MCQPanel.add(rdbtnNewRadioButton_3);
 		
 		slider = new JSlider();
