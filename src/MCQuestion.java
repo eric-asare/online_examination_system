@@ -5,7 +5,7 @@ public class MCQuestion extends Question {
   private int weight;
   
   public MCQuestion(String question, String[] answers, int ans_choice, int weight) {
-    this.question = question;
+    this.question = question.replaceAll("\t", "  ");
     this.answers = answers;
     this.ans_choice = ans_choice;
     this.weight = weight;
@@ -26,4 +26,11 @@ public class MCQuestion extends Question {
   public int getWeight() {
     return weight;
   }
+
+  public String toString() {
+    String choices = String.join("\t", answers);
+    return String.format("0\t%s\t%d\t%s\t%d\t", weight, question, answers.length, choices, ans_choice);
+  }
+
+
 }

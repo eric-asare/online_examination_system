@@ -1,11 +1,10 @@
 import java.awt.BorderLayout;
-import java.awt.EventQueue;
 import javax.swing.border.EmptyBorder;
 
 import javax.swing.*;
 import java.awt.event.*;
 
-public class examsGUI extends JFrame {
+public class ExamsGUI extends JFrame {
 
 	private static final long serialVersionUID = 1L;
 	private JTextField weight;
@@ -43,9 +42,9 @@ public class examsGUI extends JFrame {
 	private JPanel selectionPanel;
   private JList<String> optionsList;
 
-	private examManager exManager;
+	private ExamManager exManager;
 
-	public examsGUI() {
+	public ExamsGUI() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 800, 1000);
 
@@ -203,7 +202,7 @@ public class examsGUI extends JFrame {
 		btnFinish.setBounds(369, 500, 117, 29);
 		contentPane.add(btnFinish);
 
-		exManager = new examManager();
+		exManager = ExamManager.get();
 		loadQuestion(1);
 	}
 
@@ -212,7 +211,7 @@ public class examsGUI extends JFrame {
 	}
 
 	private void loadQuestion(int question_no) {
-		Question q = exManager.get(question_no);
+		Question q = exManager.getQuestion(question_no);
 		String[] answers = q.getChoices();
 		if (answers == null) {
 			//display text

@@ -8,7 +8,7 @@ import javax.swing.event.ChangeListener;
 
 import java.awt.event.*;
 
-public class examWriter extends JFrame {
+public class ExamWriteGUI extends JFrame {
 
 	private static final long serialVersionUID = 1L;
 	private JRadioButton rdbtnMCQ;
@@ -51,10 +51,10 @@ public class examWriter extends JFrame {
 
 	private JTextArea txtrTypeAnswer;
 
-	private examManager exManager;
+	private ExamManager exManager;
 	
 
-	public examWriter() {
+	public ExamWriteGUI() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 800, 1000);
 		contentPane = new JPanel();
@@ -216,7 +216,7 @@ public class examWriter extends JFrame {
 		btnFinish = new JButton("Finish");
 		nextFinishPanel.add(btnFinish);
 
-		exManager = new examManager();
+		exManager = ExamManager.get();
 
 		btnNextQuestion.addActionListener(new ActionListener() {
 			@Override
@@ -227,7 +227,7 @@ public class examWriter extends JFrame {
 					int ans_choice = -1;
 					for (int i = 0; i < slider.getValue(); i++) {
 						System.out.println(ans_fields[i]);
-						answers[i] = ans_fields[i].getText();
+						answers[i] = ans_fields[i].getText().replace("\t", "  ");
 						if (ans_buttons[i].isSelected()) {
 							ans_choice = i;
 						}

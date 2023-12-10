@@ -4,8 +4,8 @@ public class TextQuestion extends Question{
   private int weight;
  
   public TextQuestion(String question, String answer, int weight) {
-    this.question = question;
-    this.answer = answer;
+    this.question = question.replaceAll("\t", "  ");
+    this.answer = answer.replaceAll("\t", "  ");
     this.weight = weight;
   }
 
@@ -23,5 +23,9 @@ public class TextQuestion extends Question{
 
   public String[] getChoices() {
     return null;
+  }
+
+  public String toString() {
+    return String.format("1\t%d\t%s\t%s\t", weight, question, answer);
   }
 }

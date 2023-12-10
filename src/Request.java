@@ -1,51 +1,27 @@
 public class Request {
-    private int studentID;
-    private int examID;
-    private int questionNum;
-    private String requestText;
+
+    private String request_text;
+    private String feedback;
 
 
-    Request(){
-
-    }
-    Request(int studentID, int examID, int questionNum, String requestText){
-        this.studentID = studentID;
-        this.examID = examID;
-        this.questionNum = questionNum;
-        this.requestText = requestText;
+    public Request(String request_text, String feedback){
+        this.request_text = request_text.replaceAll("\t", "  ");
+        this.feedback = feedback.replaceAll("\t", "  ");
     }
 
-    public int getStudentID(){
-        return this.studentID;
+    public String getRequest() {
+        return request_text;
     }
 
-    public void setStudentID(int id){
-        this.studentID = id;
-        
+    public String getFeedback() {
+        return feedback;
     }
 
-    public int getExamsID(){
-        return this.examID;
-    }
-    
-    public void setExamsID(int id){
-        this.examID = id;
+    public void setFeedback(String feedback) {
+        this.feedback = feedback.replaceAll("\t", "  ");
     }
 
-    public int getQuestionNum(){
-        return this.questionNum;
+    public String toString() {
+        return String.format("%s\t%s\t", request_text, feedback);
     }
-        
-    public void setQuestionNum(int num){
-        this.questionNum = num;
-    }
-        
-    public String getRequestText(){
-        return this.requestText; 
-    }
-    
-    public void setRequestText(String requestText) {
-        this.requestText = requestText;
-    }
-
 }

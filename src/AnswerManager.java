@@ -3,47 +3,64 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 public class AnswerManager {
+  
+  private static AnswerManager instance;
   private int examID;
   private int studentID;
   
-  private ArrayList<String> student_answers;
-  private ArrayList<String> grade_feedback;
-  private ArrayList<Integer> grade_scores;
+  private ArrayList<Answer> answers;
 
-  public AnswerManager(int examID, int studentID) {
+  private AnswerManager() {
+    answers = new ArrayList<Answer>();
+  }
+
+  public static AnswerManager get() {
+    if (instance == null) {
+      instance = new AnswerManager();
+    }
+    return instance;
+  }
+
+  public void setExamID(int examID) {
     this.examID = examID;
+  }
+
+  public void setStudentID(int studentID) {
     this.studentID = studentID;
   }
 
   public void save(String ans, int question_no) {
-    if (question_no > student_answers.size()) {
-      student_answers.ensureCapacity(question_no);
+    Answer answer = new Answer(ans, -1, "");
+    if (question_no > answers.size()) {
+      answers.add(answer);
     }
-    student_answers.set(question_no-1, ans);
+    answers.set(question_no-1, answer);
   }
 
   public void grade(String feedback, int score, int question_no) {
-    if (question_no > grade_feedback.size()) {
-      grade_scores.ensureCapacity(question_no);
-      grade_feedback.ensureCapacity(question_no);
+    answers.get(question_no-1).setGrade(score);
+    answers.get(question_no-1).setFeedback(feedback);
+  }
+
+  public void submit(String status) {
+    try {
+      String filepath = String.format("answers/answer_%d_%d.txt", examID, studentID);
+      FileWriter wr = new FileWriter(filepath);
+      wr.write(String.format("%s\t%s\t", student, status));
+      for (Answer answer : answers) {
+        wr.write(answer.toString());
+      }
+      wr.close();
+    } catch (IOException e) {
+      e.printStackTrace();
     }
-    grade_feedback.set(question_no-1, feedback);
-    grade_scores.set(question_no-1, score);
   }
 
-  public void submit_answers() {
-    //write to file
-  }
-
-  public void submit_grades() {
-
-  }
-
-  public static String[] get_answers_display_info() {
+  public String[] get_answers_display_info() {
     File dir = new File("answers");
     File[] files = dir.listFiles(new FilenameFilter() {
       public boolean accept(File dir, String name) {
-          return name.startsWith("answer") && name.endsWith(".txt");
+          return name.startsWith(String.format("answer_%d_", examID)) && name.endsWith(".txt");
       }
     });
     String [] results = new String[files.length];
@@ -52,12 +69,9 @@ public class AnswerManager {
       Scanner sc = null;
       try {
         sc = new Scanner(files[i]).useDelimiter("\t");
-        int exam = sc.nextInt();
-        sc.nextLine();
-        int student = sc.nextInt();
-        sc.nextLine();
-        String grade = sc.nextLine();
-        results[i] = String.format("%d\t%d\t%s", exam, student, grade);
+        String student = sc.nextLine();
+        String status = sc.nextLine();
+        results[i] = String.format("%s\t%s", student, status);
       } catch (IOException e) {
         results[i] = "";
       } finally {
@@ -72,22 +86,20 @@ public class AnswerManager {
   }
 
   public void open_answers_file() {
-    student_answers.clear();
-    grade_feedback.clear();
-    grade_scores.clear();
+    answers.clear();
     String filepath = String.format("answers/answer_%d_%d.txt", examID, studentID);
     Scanner sc = null;
     try {
-      File answers = new File(filepath);
-      sc = new Scanner(answers).useDelimiter("\t");
-      sc.nextLine();
+      File answer_file = new File(filepath);
+      sc = new Scanner(answer_file).useDelimiter("\t");
       sc.nextLine();
       sc.nextLine();
       while (sc.hasNext()) {
-        student_answers.add(sc.nextLine());
-        grade_feedback.add(sc.nextLine());
-        grade_scores.add(sc.nextInt());
+        String ans = sc.nextLine();
+        int score = sc.nextInt();
         sc.nextLine();
+        String feedback = sc.nextLine();
+        answers.add(new Answer(ans, score, feedback));
       }
     } catch (IOException e) {
 

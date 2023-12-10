@@ -3,4 +3,5 @@ public abstract class Question {
   abstract public String getAnswer();
   abstract public int getWeight();
   abstract public String[] getChoices();
+  abstract public String toString();
 }
