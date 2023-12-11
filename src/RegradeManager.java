@@ -3,15 +3,30 @@ import java.io.*;
 import java.util.Scanner;
 
 public class RegradeManager {
-    private static RegradeManager instance;
+    private static RegradeManager instance = null;
     private int examID;
     private int studentID;
     private int requestID;
     
     private Request request;
+    private static ArrayList<Integer> question_numbers;
   
     private RegradeManager() {
-        
+        question_numbers = new ArrayList<Integer>();
+        Scanner sc = null;
+        try {
+            File f = new File("requestdata.bin");
+            sc = new Scanner(f).useDelimiter("\t");
+            while (sc.hasNext()) {
+            question_numbers.add(sc.nextInt());
+        }
+        } catch (IOException e) {
+
+        } finally {
+            if (sc != null) {
+                sc.close();
+            }
+        }
     }
   
     public static RegradeManager get() {
@@ -41,12 +56,18 @@ public class RegradeManager {
         request.setFeedback(feedback);
     }
   
-    public void submit(String status) {
+    public void submit(int question_no, String status) {
         try {
+            requestID = question_numbers.size();
+            question_numbers.add(question_no);
             String filepath = String.format("answers/answer_%d_%d.txt", examID, studentID);
             FileWriter wr = new FileWriter(filepath);
             wr.write(String.format("%d\t%d\t%d\t%s\t", examID, studentID, requestID, status));
             wr.write(request.toString());
+            wr.close();
+
+            wr = new FileWriter("requestdata.bin", true);
+            wr.write(String.format("%d\t", question_no));
             wr.close();
         } catch (IOException e) {
             e.printStackTrace();

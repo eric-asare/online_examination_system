@@ -4,7 +4,7 @@ import java.util.Scanner;
 
 public class AnswerManager {
   
-  private static AnswerManager instance;
+  private static AnswerManager instance = null;
   private int examID;
   private int studentID;
   
@@ -13,7 +13,21 @@ public class AnswerManager {
 
   private AnswerManager() {
     answers = new ArrayList<Answer>();
-    //load students
+    students = new ArrayList<String>();
+    Scanner sc = null;
+    try {
+      File f = new File("studentdata.bin");
+      sc = new Scanner(f).useDelimiter("\t");
+      while (sc.hasNext()) {
+        students.add(sc.next());
+      }
+    } catch (IOException e) {
+
+    } finally {
+      if (sc != null) {
+        sc.close();
+      }
+    }
   }
 
   public static AnswerManager get() {

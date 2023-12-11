@@ -221,16 +221,25 @@ public class ExamWriteGUI extends JFrame {
 		btnNextQuestion.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				saveQuestion();
+				try {
+					saveQuestion();
+				} catch (NumberFormatException ex) {
+					JOptionPane.showMessageDialog(null, "Weight must be a positive integer");
+				}
 			}
 		});
 
 		btnFinish.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				saveQuestion();
-				String name = JOptionPane.showInputDialog("Input Exam Name:");
-				exManager.submit(name);
+				try {
+					saveQuestion();
+					String name = JOptionPane.showInputDialog("Input Exam Name:");
+					exManager.submit(name);
+					System.exit(0);
+				} catch (NumberFormatException ex) {
+					JOptionPane.showMessageDialog(null, "Weight must be a positive integer");
+				}
 			}
 		});
 
@@ -244,7 +253,7 @@ public class ExamWriteGUI extends JFrame {
 	
 	}
 
-	private void saveQuestion() {
+	private void saveQuestion() throws NumberFormatException {
 		//public MCQuestion(String question, String[] answers, int ans_choice, int weight)
 		if (rdbtnMCQ.isSelected()) {
 			String[] answers = new String[slider.getValue()];
@@ -259,13 +268,21 @@ public class ExamWriteGUI extends JFrame {
 			if (ans_choice == -1) {
 				return;
 			}
-			Question q = new MCQuestion(writeQuestion.getText(), answers, ans_choice, Integer.parseInt(weight.getText()));
+			int w = Integer.parseInt(weight.getText());
+			if (w <= 0) {
+				throw new NumberFormatException();
+			}
+			Question q = new MCQuestion(writeQuestion.getText(), answers, ans_choice, w);
 			lblQuesNum.setText(String.format("Question %d", ++question_no));
 			exManager.save(q);
 		}
 		//TextQuestion(String question, String answer, int weight)
 		else if (rdbtnText.isSelected()) {
-			Question q = new TextQuestion(writeQuestion.getText(), txtrTypeAnswer.getText(), Integer.parseInt(weight.getText()));
+			int w = Integer.parseInt(weight.getText());
+			if (w <= 0) {
+				throw new NumberFormatException();
+			}
+			Question q = new TextQuestion(writeQuestion.getText(), txtrTypeAnswer.getText(), w);
 			lblQuesNum.setText(String.format("Question %d", ++question_no));
 			exManager.save(q);
 		}

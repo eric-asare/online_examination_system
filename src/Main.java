@@ -7,11 +7,11 @@ public class Main {
 		// studentGUI s = new studentGUI();
 		// s.setVisible(true);
 
-		// ExamWriteGUI examWriterFrame = new ExamWriteGUI();
-		// examWriterFrame.setVisible(true);
+		ExamWriteGUI examWriterFrame = new ExamWriteGUI();
+		examWriterFrame.setVisible(true);
 
-		ExamsGUI examGUIFrame = new ExamsGUI(0);
-		examGUIFrame.setVisible(true);
+		// ExamsGUI examGUIFrame = new ExamsGUI(0);
+		// examGUIFrame.setVisible(true);
 
 
 		// copy weFrame = new copy();
