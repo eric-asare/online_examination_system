@@ -9,9 +9,11 @@ public class AnswerManager {
   private int studentID;
   
   private ArrayList<Answer> answers;
+  private static ArrayList<String> students;
 
   private AnswerManager() {
     answers = new ArrayList<Answer>();
+    //load students
   }
 
   public static AnswerManager get() {
@@ -46,7 +48,7 @@ public class AnswerManager {
     try {
       String filepath = String.format("answers/answer_%d_%d.txt", examID, studentID);
       FileWriter wr = new FileWriter(filepath);
-      wr.write(String.format("%s\t%s\t", student, status));
+      wr.write(String.format("%s\t%s\t", studentID, status));
       for (Answer answer : answers) {
         wr.write(answer.toString());
       }
@@ -69,9 +71,9 @@ public class AnswerManager {
       Scanner sc = null;
       try {
         sc = new Scanner(files[i]).useDelimiter("\t");
-        String student = sc.nextLine();
-        String status = sc.nextLine();
-        results[i] = String.format("%s\t%s", student, status);
+        int studentID = sc.nextInt();
+        String status = sc.next();
+        results[i] = String.format("%s\t%s", studentID, status);
       } catch (IOException e) {
         results[i] = "";
       } finally {
@@ -92,13 +94,12 @@ public class AnswerManager {
     try {
       File answer_file = new File(filepath);
       sc = new Scanner(answer_file).useDelimiter("\t");
-      sc.nextLine();
-      sc.nextLine();
+      sc.next();
+      sc.next();
       while (sc.hasNext()) {
-        String ans = sc.nextLine();
+        String ans = sc.next();
         int score = sc.nextInt();
-        sc.nextLine();
-        String feedback = sc.nextLine();
+        String feedback = sc.next();
         answers.add(new Answer(ans, score, feedback));
       }
     } catch (IOException e) {

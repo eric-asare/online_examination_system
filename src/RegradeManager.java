@@ -6,7 +6,7 @@ public class RegradeManager {
     private static RegradeManager instance;
     private int examID;
     private int studentID;
-    private int regradeID;
+    private int requestID;
     
     private Request request;
   
@@ -29,8 +29,8 @@ public class RegradeManager {
         this.studentID = studentID;
     }
 
-    public void setRegradeID(int regradeID) {
-        this.regradeID = regradeID;
+    public void setRequestID(int requestID) {
+        this.requestID = requestID;
     }
   
     public void save(String request_text) {
@@ -45,7 +45,7 @@ public class RegradeManager {
         try {
             String filepath = String.format("answers/answer_%d_%d.txt", examID, studentID);
             FileWriter wr = new FileWriter(filepath);
-            wr.write(String.format("%s\t%s\t%d\t%s\t", exam_name, student, question_no, status));
+            wr.write(String.format("%d\t%d\t%d\t%s\t", examID, studentID, requestID, status));
             wr.write(request.toString());
             wr.close();
         } catch (IOException e) {
@@ -66,12 +66,11 @@ public class RegradeManager {
             Scanner sc = null;
             try {
             sc = new Scanner(files[i]).useDelimiter("\t");
-            String exam_name = sc.nextLine();
-            String student = sc.nextLine();
-            int question_no = sc.nextInt();
-            sc.nextLine();
-            String status = sc.nextLine();
-            results[i] = String.format("%s\t%s\t%d\t%s", exam_name, student, question_no, status);
+            int exam = sc.nextInt();
+            int student = sc.nextInt();
+            int request = sc.nextInt();
+            String status = sc.next();
+            results[i] = String.format("%d\t%d\t%d\t%s", exam, student, request, status);
             } catch (IOException e) {
             results[i] = "";
             } finally {
@@ -86,17 +85,17 @@ public class RegradeManager {
     }
     
     public void open_request_file() {
-        String filepath = String.format("requests/request_%d_%d_%d.txt", examID, studentID, regradeID);
+        String filepath = String.format("requests/request_%d_%d_%d.txt", examID, studentID, requestID);
         Scanner sc = null;
         try {
             File request_file = new File(filepath);
             sc = new Scanner(request_file).useDelimiter("\t");
-            sc.nextLine();
-            sc.nextLine();
-            sc.nextLine();
-            sc.nextLine();
-            String request_text = sc.nextLine();
-            String feedback = sc.nextLine();
+            sc.next();
+            sc.next();
+            sc.next();
+            sc.next();
+            String request_text = sc.next();
+            String feedback = sc.next();
             request = new Request(request_text, feedback);
         } catch (IOException e) {
 

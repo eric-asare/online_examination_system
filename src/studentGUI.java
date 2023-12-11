@@ -30,7 +30,7 @@ public class StudentGUI extends JFrame {
 		    public void actionPerformed(ActionEvent e) {
 		    	System.out.println("clicked");
 		    	setVisible(false);
-		        ExamsGUI frame = new ExamsGUI();
+		        ExamsGUI frame = new ExamsGUI(0);
 		        frame.setVisible(true);
 		    }
 		});

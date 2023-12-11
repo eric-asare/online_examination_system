@@ -221,35 +221,16 @@ public class ExamWriteGUI extends JFrame {
 		btnNextQuestion.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				//public MCQuestion(String question, String[] answers, int ans_choice, int weight)
-				if (rdbtnMCQ.isSelected()) {
-					String[] answers = new String[slider.getValue()];
-					int ans_choice = -1;
-					for (int i = 0; i < slider.getValue(); i++) {
-						System.out.println(ans_fields[i]);
-						answers[i] = ans_fields[i].getText().replace("\t", "  ");
-						if (ans_buttons[i].isSelected()) {
-							ans_choice = i;
-						}
-					}
-					Question q = new MCQuestion(writeQuestion.getText(), answers, ans_choice, Integer.parseInt(weight.getText()));
-					lblQuesNum.setText(String.format("Question %d", ++question_no));
-					exManager.save(q);
-				}
-				//TextQuestion(String question, String answer, int weight)
-				else if (rdbtnText.isSelected()) {
-					Question q = new TextQuestion(writeQuestion.getText(), txtrTypeAnswer.getText(), Integer.parseInt(weight.getText()));
-					lblQuesNum.setText(String.format("Question %d", ++question_no));
-					exManager.save(q);
-				}
+				saveQuestion();
+			}
+		});
 
-				writeQuestion.setText("");
-				weight.setText("");
-				txtrTypeAnswer.setText("");
-				for (int i = 0; i < 4; i++) {
-					ans_fields[i].setText("");
-				}
-				choices.clearSelection();
+		btnFinish.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				saveQuestion();
+				String name = JOptionPane.showInputDialog("Input Exam Name:");
+				exManager.submit(name);
 			}
 		});
 
@@ -261,5 +242,40 @@ public class ExamWriteGUI extends JFrame {
 		nextFinishPanel.setVisible(false);
 
 	
+	}
+
+	private void saveQuestion() {
+		//public MCQuestion(String question, String[] answers, int ans_choice, int weight)
+		if (rdbtnMCQ.isSelected()) {
+			String[] answers = new String[slider.getValue()];
+			int ans_choice = -1;
+			for (int i = 0; i < slider.getValue(); i++) {
+				System.out.println(ans_fields[i]);
+				answers[i] = ans_fields[i].getText().replace("\t", "  ");
+				if (ans_buttons[i].isSelected()) {
+					ans_choice = i;
+				}
+			}
+			if (ans_choice == -1) {
+				return;
+			}
+			Question q = new MCQuestion(writeQuestion.getText(), answers, ans_choice, Integer.parseInt(weight.getText()));
+			lblQuesNum.setText(String.format("Question %d", ++question_no));
+			exManager.save(q);
+		}
+		//TextQuestion(String question, String answer, int weight)
+		else if (rdbtnText.isSelected()) {
+			Question q = new TextQuestion(writeQuestion.getText(), txtrTypeAnswer.getText(), Integer.parseInt(weight.getText()));
+			lblQuesNum.setText(String.format("Question %d", ++question_no));
+			exManager.save(q);
+		}
+
+		writeQuestion.setText("");
+		weight.setText("");
+		txtrTypeAnswer.setText("");
+		for (int i = 0; i < 4; i++) {
+			ans_fields[i].setText("");
+		}
+		choices.clearSelection();
 	}
 }

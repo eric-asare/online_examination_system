@@ -40,11 +40,12 @@ public class ExamsGUI extends JFrame {
 
 
 	private JPanel selectionPanel;
-  private JList<String> optionsList;
+  	private JList<String> optionsList;
 
 	private ExamManager exManager;
+	private AnswerManager ansManager;
 
-	public ExamsGUI() {
+	public ExamsGUI(int studentID) {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 800, 1000);
 
@@ -53,7 +54,12 @@ public class ExamsGUI extends JFrame {
 		setContentPane(selectionPanel);
 
 		// Get All Exams Available 
-		String[] options = new String[]{"Option 1", "Option 2", "Option 3", "Option 4", "Option 5"};
+		exManager = ExamManager.get();
+		int[] ids = exManager.get_exams_display_info();
+		String[] options = new String[ids.length];
+		for (int i : ids) {
+			options[i] = exManager.getName(i);
+		}
 
 		optionsList = new JList<>(options);
 		optionsList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION); // Allow only single selection
@@ -62,18 +68,17 @@ public class ExamsGUI extends JFrame {
 
 		JButton selectButton = new JButton("Select");
 		selectButton.addActionListener(new ActionListener() {
-				public void actionPerformed(ActionEvent e) {
-						String selectedOption = optionsList.getSelectedValue();
-						System.out.println(selectedOption);
-						takeExam(1);
-				}
+			public void actionPerformed(ActionEvent e) {
+				int idx = optionsList.getSelectedIndex();
+				takeExam(idx, studentID);
+			}
 		});
 
 		selectionPanel.add(scrollPane, BorderLayout.CENTER);
 		selectionPanel.add(selectButton, BorderLayout.SOUTH);
 	}
 
-	private void takeExam(int examID) {
+	private void takeExam(int examID, int studentID) {
 
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -202,12 +207,38 @@ public class ExamsGUI extends JFrame {
 		btnFinish.setBounds(369, 500, 117, 29);
 		contentPane.add(btnFinish);
 
-		exManager = ExamManager.get();
+		btnFinish.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				save(question_no);
+				ansManager.submit("Ungraded");
+			}
+		});
+
+		exManager.setID(examID);
+		exManager.open_exam_file();
+
+		ansManager = AnswerManager.get();
+		ansManager.setExamID(examID);
+		ansManager.setStudentID(studentID);
+
 		loadQuestion(1);
 	}
 
 	private void save(int question_no) {
 		//save to AnswerManager
+		String ans = "";
+		if(TextPanel.isVisible()) {
+			ans = txtrTypeAnswer.getText();
+		}
+		else if (MCQPanel.isVisible()) {
+			for (int i = 0; i < 4; i++) {
+				if (ans_buttons[i].isSelected()) {
+					ans = ans_fields[i].getText();
+				}
+			}
+		}
+		ansManager.save(ans, question_no);
 	}
 
 	private void loadQuestion(int question_no) {
@@ -223,8 +254,8 @@ public class ExamsGUI extends JFrame {
 			MCQPanel.setVisible(true);
 			TextPanel.setVisible(false);
 			for (int i = 0; i < 4; i++) {
-			ans_buttons[i].setVisible(false);
-			ans_fields[i].setVisible(false);
+				ans_buttons[i].setVisible(false);
+				ans_fields[i].setVisible(false);
 			}
 			choices.clearSelection();
 			choices = new ButtonGroup();

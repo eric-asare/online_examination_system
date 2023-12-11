@@ -1,17 +1,17 @@
 public class Main {
 
 	public static void main(String[] args) {
-		LoginGUI lg = new LoginGUI();
-		lg.setVisible(true);
+		// LoginGUI lg = new LoginGUI();
+		// lg.setVisible(true);
 
 		// studentGUI s = new studentGUI();
 		// s.setVisible(true);
 
-		// examWriter examWriterFrame = new examWriter();
+		// ExamWriteGUI examWriterFrame = new ExamWriteGUI();
 		// examWriterFrame.setVisible(true);
 
-		// examsGUI examGUIFrame = new examsGUI();
-		// examGUIFrame.setVisible(true);
+		ExamsGUI examGUIFrame = new ExamsGUI(0);
+		examGUIFrame.setVisible(true);
 
 
 		// copy weFrame = new copy();
