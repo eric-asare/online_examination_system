@@ -37,5 +37,17 @@ public class StudentGUI extends JFrame {
         JButton viewGradesBtn = new JButton("View Grades");
         viewGradesBtn.setBounds((getWidth() - 117) / 2, (getHeight() - 40) / 2 + 50, 117, 40);
         contentPane.add(viewGradesBtn);
+
+
+		viewGradesBtn.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                System.out.println("clicked");
+                setVisible(false);
+                StudentGradeViewer frame = new StudentGradeViewer(studentID);
+                frame.setVisible(true);
+                setVisible(false);
+            }
+        });
     }
 }

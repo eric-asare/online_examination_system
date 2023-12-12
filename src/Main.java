@@ -4,6 +4,12 @@ public class Main {
 		LoginGUI lg = new LoginGUI();
 		lg.setVisible(true);
 
+		// StudentGradeViewer st = new StudentGradeViewer();
+		// st.setVisible(true);
+
+		// RequestViewerGUI rv = new RequestViewerGUI();
+		// rv.setVisible(true);
+
 		// StudentGUI s = new StudentGUI();
 		// s.setVisible(true);
 

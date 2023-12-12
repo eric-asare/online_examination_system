@@ -1,79 +1,42 @@
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 public class StudentGradeViewer extends JFrame {
-    private JTextArea gradedAnswersTextArea;
 
-    public StudentGradeViewer() {
+    private String[] studentExams = {"Exam 1", "Exam 2", "Exam 3"}; // Placeholder list of exams for a student
+    String studentID;
+
+    public StudentGradeViewer(String studentID) {
+        this.studentID = studentID;
         setTitle("Student Grade Viewer");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setSize(1000, 1000);
-        setLayout(new BorderLayout());
+        setSize(800, 800);
+        setLocationRelativeTo(null);
 
-        gradedAnswersTextArea = new JTextArea();
-        gradedAnswersTextArea.setEditable(false);
-        gradedAnswersTextArea.setLineWrap(true); // Enable line wrap for long text
-        JScrollPane scrollPane = new JScrollPane(gradedAnswersTextArea);
-        add(scrollPane, BorderLayout.CENTER);
+        createExamList();
+    }
 
-        JButton viewGradesButton = new JButton("View Grades");
-        viewGradesButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                // Replace this with code to open the student's graded answer file
-                // For demonstration, let's assume the graded answers are loaded into a string
-                String gradedAnswers = loadGradedAnswersFromFile(); // Replace this with actual file loading logic
-                gradedAnswersTextArea.setText(gradedAnswers);
+    private void createExamList() {
+        JList<String> examList = new JList<>(studentExams);
+        examList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        examList.setLayoutOrientation(JList.VERTICAL);
+
+        JScrollPane listScrollPane = new JScrollPane(examList);
+        listScrollPane.setPreferredSize(new Dimension(250, 300));
+
+        examList.addListSelectionListener(e -> {
+            if (!e.getValueIsAdjusting()) {
+                String selectedExam = examList.getSelectedValue();
+                openStudentAnswersViewer(selectedExam);
             }
         });
-        add(viewGradesButton, BorderLayout.NORTH);
 
-        JButton requestRegradeButton = new JButton("Request Regrade");
-        requestRegradeButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                // Get the selected text range
-                int start = gradedAnswersTextArea.getSelectionStart();
-                int end = gradedAnswersTextArea.getSelectionEnd();
-
-                if (start != -1 && end != -1) {
-                    String selectedText = gradedAnswersTextArea.getText().substring(start, end);
-                    if (!selectedText.isEmpty()) {
-                        // Code to handle the regrade request for the selected question
-                        requestRegrade(selectedText); // Replace this with your regrade logic
-                        JOptionPane.showMessageDialog(StudentGradeViewer.this, "Regrade requested for the selected question.");
-                    } else {
-                        JOptionPane.showMessageDialog(StudentGradeViewer.this, "Please select a question to request a regrade.");
-                    }
-                } else {
-                    JOptionPane.showMessageDialog(StudentGradeViewer.this, "Please select a question to request a regrade.");
-                }
-            }
-        });
-        add(requestRegradeButton, BorderLayout.SOUTH);
+        add(listScrollPane);
     }
 
-    // Method to simulate loading graded answers from a file
-    private String loadGradedAnswersFromFile() {
-        // Replace this with actual file loading logic
-        // For demonstration purposes, returning sample graded answers
-        return "Question 1: Grade - A\nAnswer: ...\n\nQuestion 2: Grade - B\nAnswer: ...";
-    }
-
-    // Method to handle the regrade request for a specific question
-    private void requestRegrade(String selectedQuestion) {
-        // Replace this with your regrade logic for the selected question
-        // For example, you might submit a regrade request to an instructor or system
-        // Here, you could add code to handle the regrade request process
-        System.out.println("Regrade requested for: " + selectedQuestion);
-    }
-
-    public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -> {
-            StudentGradeViewer gradeViewer = new StudentGradeViewer();
-            gradeViewer.setVisible(true);
-        });
+    private void openStudentAnswersViewer(String selectedExam) {
+        StudentAnswersViewer studentAnswersViewer = new StudentAnswersViewer(selectedExam);
+        studentAnswersViewer.setVisible(true);
     }
 }
+

@@ -44,7 +44,9 @@ public class GraderGUI extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 System.out.println("Viewing regrade requests...");
-                // Perform actions for viewing regrade requests
+                RequestViewerGUI frame = new RequestViewerGUI();
+                frame.setVisible(true);
+                setVisible(false);
             }
         });
 

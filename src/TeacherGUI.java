@@ -40,7 +40,9 @@ class TeacherGUI extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 System.out.println("Hello, my name is Grade Papers button");
-                // Add your logic for Grade Papers button
+                GradeGUI frame = new GradeGUI();
+                frame.setVisible(true);
+                setVisible(false);
             }
         });
 
@@ -48,7 +50,9 @@ class TeacherGUI extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 System.out.println("Hello, my name is View Regrade Requests button");
-                // Add your logic for View Regrade Requests button
+                RequestViewerGUI frame = new RequestViewerGUI();
+                frame.setVisible(true);
+                setVisible(false);
             }
         });
 
