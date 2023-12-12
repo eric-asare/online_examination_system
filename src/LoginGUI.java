@@ -6,7 +6,7 @@ import java.io.FileReader;
 import java.io.IOException;
 
 public class LoginGUI extends JFrame {
-    private JTextField usernameField;
+    private JTextField netIDField; // Changed: Field for Net ID
     private JPasswordField passwordField;
 
     public LoginGUI() {
@@ -19,15 +19,15 @@ public class LoginGUI extends JFrame {
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.insets = new Insets(5, 5, 5, 5);
 
-        JLabel usernameLabel = new JLabel("Username:");
+        JLabel netIDLabel = new JLabel("Net ID:"); // Changed: Label for Net ID
         gbc.gridx = 0;
         gbc.gridy = 0;
-        panel.add(usernameLabel, gbc);
+        panel.add(netIDLabel, gbc);
 
-        usernameField = new JTextField(15);
+        netIDField = new JTextField(15); // Changed: Field for Net ID
         gbc.gridx = 1;
         gbc.gridy = 0;
-        panel.add(usernameField, gbc);
+        panel.add(netIDField, gbc);
 
         JLabel passwordLabel = new JLabel("Password:");
         gbc.gridx = 0;
@@ -49,7 +49,7 @@ public class LoginGUI extends JFrame {
         loginButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                String enteredUsername = usernameField.getText();
+                String enteredNetID = netIDField.getText(); // Changed: Get Net ID
                 char[] enteredPasswordChars = passwordField.getPassword();
                 String enteredPassword = new String(enteredPasswordChars);
 
@@ -61,11 +61,11 @@ public class LoginGUI extends JFrame {
                     while ((line = br.readLine()) != null) {
                         String[] parts = line.split(",\\s*");
                         if (parts.length == 3) {
-                            String username = parts[0];
+                            String netID = parts[0]; // Changed: Read Net ID from file
                             String password = parts[1];
                             String userRole = parts[2];
 
-                            if (enteredUsername.equals(username) && enteredPassword.equals(password)) {
+                            if (enteredNetID.equals(netID) && enteredPassword.equals(password)) {
                                 loginSuccess = true;
                                 role = userRole;
                                 break;
@@ -77,14 +77,26 @@ public class LoginGUI extends JFrame {
                 }
 
                 if (loginSuccess) {
-                    // JOptionPane.showMessageDialog(null, "Login successful! Role: " + role);
                     System.out.println("Login Successful Role:" + role);
+                    if ("Student".equals(role)) { // Changed: Use .equals for string comparison
+                        StudentGUI s = new StudentGUI(enteredNetID);
+                        s.setVisible(true);
+                        setVisible(false);
+                    } else if ("Teacher".equals(role)) { // Changed: Use .equals for string comparison
+                        TeacherGUI tg = new TeacherGUI();
+                        tg.setVisible(true);
+                        setVisible(false);
+                    } else if ("Grader".equals(role)) { // Changed: Use .equals for string comparison
+                        GraderGUI gg = new GraderGUI();
+                        gg.setVisible(true);
+                        setVisible(false);
+                    }
                 } else {
                     JOptionPane.showMessageDialog(null, "Login failed! Invalid credentials.");
                 }
 
                 // Clear fields after login attempt
-                usernameField.setText("");
+                netIDField.setText("");
                 passwordField.setText("");
             }
         });

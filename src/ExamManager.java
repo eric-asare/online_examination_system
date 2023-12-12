@@ -67,6 +67,7 @@ public class ExamManager {
       sc = new Scanner(exam).useDelimiter("\t");
       System.out.println("Hello");
       sc.next();
+      sc.next();
       while (sc.hasNext()) {
         int type = sc.nextInt();
         if (type != 0) {
@@ -100,13 +101,13 @@ public class ExamManager {
     }
   }
 
-  public void submit(String name) {
+  public void submit(String name, int time) {
     try {
       examID = exams.size();
       exams.add(name);
       String filepath = String.format("exams/exam_%d.txt", examID);
       FileWriter wr = new FileWriter(filepath);
-      wr.write(String.format("%d\t", examID));
+      wr.write(String.format("%d\t%d\t", examID, time));
       for (Question question : questions) {
         wr.write(question.toString());
       }
@@ -120,7 +121,7 @@ public class ExamManager {
     }
   }
 
-  public int[] get_exams_display_info() {
+  public ExamOption[] get_exams_display_info() {
     File dir = new File("exams");
     File[] files = dir.listFiles(new FilenameFilter() {
       public boolean accept(File dir, String name) {
@@ -128,16 +129,17 @@ public class ExamManager {
       }
     });
     
-    int[] results = new int[files.length];
+    ExamOption[] results = new ExamOption[files.length];
 
     for (int i = 0; i < files.length; i++) {
       Scanner sc = null;
       try {
         sc = new Scanner(files[i]).useDelimiter("\t");
         int exam = sc.nextInt();
-        results[i] = exam;
+        int time = sc.nextInt();
+        results[i] = new ExamOption(exam, time);
       } catch (IOException e) {
-        results[i] = -1;
+        results[i] = null;
       } finally {
         if (sc != null) {
           sc.close();

@@ -6,28 +6,12 @@ public class AnswerManager {
   
   private static AnswerManager instance = null;
   private int examID;
-  private int studentID;
+  private String studentID;
   
   private ArrayList<Answer> answers;
-  private static ArrayList<String> students;
 
   private AnswerManager() {
     answers = new ArrayList<Answer>();
-    students = new ArrayList<String>();
-    Scanner sc = null;
-    try {
-      File f = new File("studentdata.bin");
-      sc = new Scanner(f).useDelimiter("\t");
-      while (sc.hasNext()) {
-        students.add(sc.next());
-      }
-    } catch (IOException e) {
-
-    } finally {
-      if (sc != null) {
-        sc.close();
-      }
-    }
   }
 
   public static AnswerManager get() {
@@ -41,12 +25,17 @@ public class AnswerManager {
     this.examID = examID;
   }
 
-  public void setStudentID(int studentID) {
+  public void setStudentID(String studentID) {
     this.studentID = studentID;
   }
 
-  public void save(String ans, int question_no) {
+  public Answer getAnswer(int question_no) {
+    return answers.get(question_no-1);
+  }
+
+  public void save(String ans, int question_no, int choice) {
     Answer answer = new Answer(ans, -1, "");
+    answer.setChoice(choice);
     if (question_no > answers.size()) {
       answers.add(answer);
     }
@@ -60,7 +49,7 @@ public class AnswerManager {
 
   public void submit(String status) {
     try {
-      String filepath = String.format("answers/answer_%d_%d.txt", examID, studentID);
+      String filepath = String.format("answers/answer_%d_%s.txt", examID, studentID);
       FileWriter wr = new FileWriter(filepath);
       wr.write(String.format("%s\t%s\t", studentID, status));
       for (Answer answer : answers) {
@@ -72,24 +61,24 @@ public class AnswerManager {
     }
   }
 
-  public String[] get_answers_display_info() {
+  public AnswerOption[] get_answers_display_info() {
     File dir = new File("answers");
     File[] files = dir.listFiles(new FilenameFilter() {
       public boolean accept(File dir, String name) {
           return name.startsWith(String.format("answer_%d_", examID)) && name.endsWith(".txt");
       }
     });
-    String [] results = new String[files.length];
+    AnswerOption[] results = new AnswerOption[files.length];
 
     for (int i = 0; i < files.length; i++) {
       Scanner sc = null;
       try {
         sc = new Scanner(files[i]).useDelimiter("\t");
-        int studentID = sc.nextInt();
+        String studentID = sc.next();
         String status = sc.next();
-        results[i] = String.format("%s\t%s", studentID, status);
+        results[i] = new AnswerOption(studentID, status);
       } catch (IOException e) {
-        results[i] = "";
+        results[i] = null;
       } finally {
         if (sc != null) {
           sc.close();
@@ -103,7 +92,7 @@ public class AnswerManager {
 
   public void open_answers_file() {
     answers.clear();
-    String filepath = String.format("answers/answer_%d_%d.txt", examID, studentID);
+    String filepath = String.format("answers/answer_%d_%s.txt", examID, studentID);
     Scanner sc = null;
     try {
       File answer_file = new File(filepath);

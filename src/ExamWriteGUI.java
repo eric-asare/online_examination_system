@@ -55,8 +55,9 @@ public class ExamWriteGUI extends JFrame {
 	
 
 	public ExamWriteGUI() {
+		setTitle("Write Exams");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 800, 1000);
+		setBounds(100, 100, 800, 800);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 
@@ -233,12 +234,13 @@ public class ExamWriteGUI extends JFrame {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				try {
-					saveQuestion();
 					String name = JOptionPane.showInputDialog("Input Exam Name:");
-					exManager.submit(name);
+					int time = Integer.parseInt(JOptionPane.showInputDialog("Input Exam Time (minutes):"));
+					saveQuestion();
+					exManager.submit(name, time);
 					System.exit(0);
 				} catch (NumberFormatException ex) {
-					JOptionPane.showMessageDialog(null, "Weight must be a positive integer");
+					JOptionPane.showMessageDialog(null, "Weight and time must be a positive integer");
 				}
 			}
 		});

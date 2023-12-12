@@ -1,8 +1,13 @@
+// TODO: Check if student have taken the exam already , don't spin it
+
 import java.awt.BorderLayout;
 import javax.swing.border.EmptyBorder;
 
 import javax.swing.*;
 import java.awt.event.*;
+
+import java.util.ArrayList;
+import java.io.*;
 
 public class ExamsGUI extends JFrame {
 
@@ -40,14 +45,15 @@ public class ExamsGUI extends JFrame {
 
 
 	private JPanel selectionPanel;
-  	private JList<String> optionsList;
+  	private JList<ExamOption> optionsList;
 
 	private ExamManager exManager;
 	private AnswerManager ansManager;
 
-	public ExamsGUI(int studentID) {
+	public ExamsGUI(String studentID) {
+		setTitle("Take Exams");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 800, 1000);
+		setBounds(100, 100, 800, 800);
 
 		selectionPanel = new JPanel();
 		selectionPanel.setLayout(new BorderLayout());
@@ -55,13 +61,8 @@ public class ExamsGUI extends JFrame {
 
 		// Get All Exams Available 
 		exManager = ExamManager.get();
-		int[] ids = exManager.get_exams_display_info();
-		String[] options = new String[ids.length];
-		for (int i : ids) {
-			options[i] = exManager.getName(i);
-		}
 
-		optionsList = new JList<>(options);
+		optionsList = new JList<ExamOption>(exManager.get_exams_display_info());
 		optionsList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION); // Allow only single selection
 
 		JScrollPane scrollPane = new JScrollPane(optionsList);
@@ -69,8 +70,15 @@ public class ExamsGUI extends JFrame {
 		JButton selectButton = new JButton("Select");
 		selectButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				int idx = optionsList.getSelectedIndex();
-				takeExam(idx, studentID);
+				int idx = optionsList.getSelectedValue().getID();
+				int time = optionsList.getSelectedValue().getTime();
+				File f = new File(String.format("answers/answer_%d_%s.txt", idx, studentID));
+				if (f.exists()) {
+					JOptionPane.showMessageDialog(null, "Already Took Exam");
+				}
+				else {
+					takeExam(idx, studentID, time);
+				}
 			}
 		});
 
@@ -78,7 +86,7 @@ public class ExamsGUI extends JFrame {
 		selectionPanel.add(selectButton, BorderLayout.SOUTH);
 	}
 
-	private void takeExam(int examID, int studentID) {
+	private void takeExam(int examID, String studentID, int time) {
 
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -228,6 +236,7 @@ public class ExamsGUI extends JFrame {
 	private void save(int question_no) {
 		//save to AnswerManager
 		String ans = "";
+		int choice = -1;
 		if(TextPanel.isVisible()) {
 			ans = txtrTypeAnswer.getText();
 		}
@@ -235,10 +244,11 @@ public class ExamsGUI extends JFrame {
 			for (int i = 0; i < 4; i++) {
 				if (ans_buttons[i].isSelected()) {
 					ans = ans_fields[i].getText();
+					choice = i;
 				}
 			}
 		}
-		ansManager.save(ans, question_no);
+		ansManager.save(ans, question_no, choice);
 	}
 
 	private void loadQuestion(int question_no) {
@@ -265,6 +275,7 @@ public class ExamsGUI extends JFrame {
 				ans_fields[i].setVisible(true);
 				ans_fields[i].setText(answers[i]);
 			}
+			ans_buttons[ansManager.getAnswer(question_no).getAnsChoice()].setSelected(true);
 		}
 		question_box.setText(q.getQuestion());
 		weight.setText(Integer.toString(q.getWeight()));

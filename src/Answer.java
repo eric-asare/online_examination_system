@@ -2,6 +2,7 @@ public class Answer {
   private String ans;
   private int grade;
   private String feedback;
+  private int ans_choice;
 
   public Answer(String ans, int grade, String feedback) {
     this.ans = ans.replaceAll("\t", "  ");
@@ -21,12 +22,20 @@ public class Answer {
     return feedback;
   }
 
+  public int getAnsChoice() {
+    return ans_choice;
+  }
+
   public void setGrade(int grade) {
     this.grade = grade;
   }
 
   public void setFeedback(String feedback) {
     this.feedback = feedback.replaceAll("\t", "  ");
+  }
+
+  public void setChoice(int ans_choice) {
+    this.ans_choice = ans_choice;
   }
 
   public String toString() {

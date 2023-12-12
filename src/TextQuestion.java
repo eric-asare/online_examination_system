@@ -24,7 +24,7 @@ public class TextQuestion extends Question{
   public String[] getChoices() {
     return null;
   }
-
+  
   public String toString() {
     return String.format("1\t%d\t%s\t%s\t", weight, question, answer);
   }
