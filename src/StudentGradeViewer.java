@@ -1,23 +1,23 @@
 import javax.swing.*;
 import java.awt.*;
+import java.io.*;
 
 public class StudentGradeViewer extends JFrame {
+    private String studentID;
 
-    private String[] studentExams = {"Exam 1", "Exam 2", "Exam 3"}; // Placeholder list of exams for a student
-    String studentID;
-
-    public StudentGradeViewer(String studentID) {
-        this.studentID = studentID;
+    public StudentGradeViewer() {
         setTitle("Student Grade Viewer");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(800, 800);
         setLocationRelativeTo(null);
+        studentID = AnswerManager.get().getStudentID();
 
         createExamList();
     }
 
     private void createExamList() {
-        JList<String> examList = new JList<>(studentExams);
+        ExamManager exManager = ExamManager.get();
+        JList<ExamOption> examList = new JList<ExamOption>(exManager.get_exams_display_info());
         examList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         examList.setLayoutOrientation(JList.VERTICAL);
 
@@ -26,17 +26,23 @@ public class StudentGradeViewer extends JFrame {
 
         examList.addListSelectionListener(e -> {
             if (!e.getValueIsAdjusting()) {
-                String selectedExam = examList.getSelectedValue();
-                openStudentAnswersViewer(selectedExam);
+                int selectedExam = examList.getSelectedValue().getID();
+                IDSetter.get().setExamID(selectedExam);
+		        IDSetter.get().setStudentID(studentID);
+				File f = new File(String.format("answers/answer_%d_%s.txt", selectedExam, studentID));
+				if (f.exists()) {
+                    StudentAnswersViewer studentAnswersViewer = new StudentAnswersViewer();
+                    studentAnswersViewer.setVisible(true);
+                    dispose();
+				}
+				else {
+					JOptionPane.showMessageDialog(null, "Haven't Taken Exam");
+				}
             }
         });
 
         add(listScrollPane);
     }
 
-    private void openStudentAnswersViewer(String selectedExam) {
-        StudentAnswersViewer studentAnswersViewer = new StudentAnswersViewer(selectedExam);
-        studentAnswersViewer.setVisible(true);
-    }
 }
 

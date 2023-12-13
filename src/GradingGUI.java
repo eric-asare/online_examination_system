@@ -1,11 +1,16 @@
 import javax.swing.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 public class GradingGUI extends JFrame {
-    private JLabel studentIDLabel, questionNumberLabel, questionTextLabel, answerLabel, studentAnswerLabel, scoreLabel, feedbackLabel, fullScoreLabel;
+    private JLabel questionNumberLabel, questionTextLabel, answerLabel, studentAnswerLabel, scoreLabel, feedbackLabel, fullScoreLabel;
     private JTextArea answerTextArea, studentAnswerTextArea, scoreField, studentScoreField;
     private JTextArea questionTextArea, feedbackTextArea;
     private JButton prevButton, nextButton, submitButton;
-    private JLabel studentIDValueLabel, questionNumberValueLabel;
+    private ExamManager exManager;
+    private AnswerManager ansManager;
+    private int question_no;
+ 
 
     public GradingGUI() {
         setTitle("Grading GUI");
@@ -16,23 +21,10 @@ public class GradingGUI extends JFrame {
         JPanel panel = new JPanel();
         panel.setLayout(null);
 
-        // Student ID Label and Value
-        studentIDLabel = new JLabel("Student ID:");
-        studentIDLabel.setBounds(50, 20, 100, 25);
-        panel.add(studentIDLabel);
-
-        studentIDValueLabel = new JLabel("S1234567"); // Placeholder value
-        studentIDValueLabel.setBounds(160, 20, 100, 25);
-        panel.add(studentIDValueLabel);
-
         // Question Number Label and Value
         questionNumberLabel = new JLabel("Question Number:");
         questionNumberLabel.setBounds(50, 60, 120, 25);
         panel.add(questionNumberLabel);
-
-        questionNumberValueLabel = new JLabel("1"); // Placeholder value
-        questionNumberValueLabel.setBounds(180, 60, 50, 25);
-        panel.add(questionNumberValueLabel);
 
         // Question Text Area (Non-Editable)
         questionTextLabel = new JLabel("Question Text:");
@@ -110,6 +102,81 @@ public class GradingGUI extends JFrame {
         panel.add(submitButton);
 
         add(panel);
-        setVisible(true);
+
+        exManager = ExamManager.get();
+        exManager.open_exam_file();
+        ansManager = AnswerManager.get();
+        ansManager.open_answers_file();
+        question_no = 1;
+        loadQuestion(question_no);
+        nextButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                try {
+                    if (question_no != exManager.getLength()) {
+                        save();
+                        loadQuestion(++question_no);
+                    }
+                } catch (NumberFormatException ex) {
+					JOptionPane.showMessageDialog(null, "Grade must be a positive integer");
+				}
+            }
+        });
+
+        prevButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                try {
+                    if (question_no != 1) {
+                        save();
+                        loadQuestion(--question_no);
+                    }
+                } catch (NumberFormatException ex) {
+					JOptionPane.showMessageDialog(null, "Grade must be a positive integer");
+				}
+            }
+        });
+
+		submitButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+                try {
+                    save();
+                    ansManager.submit("Graded");
+                    LoginGUI l = new LoginGUI();
+                    l.setVisible(true);
+                    dispose();
+                } catch (NumberFormatException ex) {
+					JOptionPane.showMessageDialog(null, "Grade must be a positive integer");
+				}
+		
+			}
+		});
+
+    }
+
+    private void loadQuestion(int question_no) {
+		Question q = exManager.getQuestion(question_no);
+        Answer a = ansManager.getAnswer(question_no);
+
+        questionNumberLabel.setText(String.format("Question %d", question_no));
+		questionTextArea.setText(q.getQuestion());
+        answerTextArea.setText(q.getAnswer());
+
+        studentAnswerTextArea.setText(a.getAns());
+		scoreField.setText(Integer.toString(q.getWeight()));
+        feedbackTextArea.setText(a.getFeedback());
+        if (a.getGrade() != -1)
+            studentScoreField.setText(Integer.toString(a.getGrade()));
+        else
+            studentScoreField.setText("Ungraded");
+
+	}
+
+    private void save() throws NumberFormatException {
+        int g = Integer.parseInt(studentScoreField.getText());
+        if (g<0 || g>exManager.getQuestion(question_no).getWeight())
+            throw new NumberFormatException();
+        ansManager.grade(feedbackTextArea.getText(), g, question_no); 
     }
 }

@@ -32,7 +32,7 @@ public class GraderGUI extends JFrame {
                 System.out.println("Grading papers...");
                 GradeGUI frame = new GradeGUI();
                 frame.setVisible(true);
-                setVisible(false);
+                dispose();
             }
         });
 
@@ -46,7 +46,7 @@ public class GraderGUI extends JFrame {
                 System.out.println("Viewing regrade requests...");
                 RequestViewerGUI frame = new RequestViewerGUI();
                 frame.setVisible(true);
-                setVisible(false);
+                dispose();
             }
         });
 

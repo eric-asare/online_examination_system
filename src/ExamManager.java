@@ -46,8 +46,6 @@ public class ExamManager {
 
   public void save(Question q) {
     questions.add(q);
-    System.out.println(q.getQuestion());
-    System.out.println(q.getAnswer());
   }
 
   public Question getQuestion(int question_no) {
@@ -95,9 +93,9 @@ public class ExamManager {
     } catch (IOException e) {
 
     } finally {
-    if (sc != null) {
+      if (sc != null) {
         sc.close();
-    }
+      }
     }
   }
 
@@ -116,6 +114,7 @@ public class ExamManager {
       wr = new FileWriter("examdata.bin", true);
       wr.write(String.format("%s\t", name));
       wr.close();
+      questions.clear();
     } catch (IOException e) {
       e.printStackTrace();
     }

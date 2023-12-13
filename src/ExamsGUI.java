@@ -18,6 +18,8 @@ public class ExamsGUI extends JFrame {
 	private JTextField ans_choice_3;
 	private JTextField ans_choice_4;
 
+	private JTextArea timerField;
+
 	private JPanel contentPane;
 	private JPanel questionPanel;
 	private JPanel TextPanel;
@@ -50,7 +52,9 @@ public class ExamsGUI extends JFrame {
 	private ExamManager exManager;
 	private AnswerManager ansManager;
 
-	public ExamsGUI(String studentID) {
+	private Timer timer;
+
+	public ExamsGUI() {
 		setTitle("Take Exams");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 800, 800);
@@ -70,6 +74,7 @@ public class ExamsGUI extends JFrame {
 		JButton selectButton = new JButton("Select");
 		selectButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				String studentID = AnswerManager.get().getStudentID();
 				int idx = optionsList.getSelectedValue().getID();
 				int time = optionsList.getSelectedValue().getTime();
 				File f = new File(String.format("answers/answer_%d_%s.txt", idx, studentID));
@@ -188,6 +193,13 @@ public class ExamsGUI extends JFrame {
 		btnNext = new JButton("next");
 		btnNext.setBounds(225, 500, 117, 29);
 		contentPane.add(btnNext);
+
+
+		
+		timerField = new JTextArea();
+		timerField.setBounds(700, 60, 80, 25);
+		timerField.setEditable(false);
+		contentPane.add(timerField);
 		
 		btnNext.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -218,19 +230,36 @@ public class ExamsGUI extends JFrame {
 		btnFinish.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				save(question_no);
-				ansManager.submit("Ungraded");
+				timer.stop();
 			}
 		});
 
-		exManager.setID(examID);
+		IDSetter.get().setExamID(examID);
+		IDSetter.get().setStudentID(studentID);
+
 		exManager.open_exam_file();
 
 		ansManager = AnswerManager.get();
-		ansManager.setExamID(examID);
-		ansManager.setStudentID(studentID);
 
 		loadQuestion(1);
+		timer = new Timer(this);
+		timer.setMinutes(time);
+		timer.start();
+	}
+
+	public void finish() {
+		save(question_no);
+		ansManager.submit("Ungraded");
+		JOptionPane.showMessageDialog(null, "Exam Finished");
+		LoginGUI l = new LoginGUI();
+		l.setVisible(true);
+		dispose();
+	}
+
+	public void setTime(int seconds) {
+		int min = seconds / 60;
+		int sec = seconds % 60;
+		timerField.setText(String.format("%d:%d", min, sec));
 	}
 
 	private void save(int question_no) {
@@ -272,10 +301,15 @@ public class ExamsGUI extends JFrame {
 			for (int i = 0; i < answers.length; i++) {
 				choices.add(ans_buttons[i]);
 				ans_buttons[i].setVisible(true);
+				ans_buttons[i].setSelected(false);
 				ans_fields[i].setVisible(true);
 				ans_fields[i].setText(answers[i]);
 			}
-			ans_buttons[ansManager.getAnswer(question_no).getAnsChoice()].setSelected(true);
+			try {
+				ans_buttons[ansManager.getAnswer(question_no).getAnsChoice()].setSelected(true);
+			} catch (Exception e) {
+
+			}
 		}
 		question_box.setText(q.getQuestion());
 		weight.setText(Integer.toString(q.getWeight()));

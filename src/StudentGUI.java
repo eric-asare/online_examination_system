@@ -8,7 +8,7 @@ public class StudentGUI extends JFrame {
     private static final long serialVersionUID = 1L;
     private JPanel contentPane;
 
-    public StudentGUI(String studentID) {
+    public StudentGUI() {
         setTitle("Student GUI");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setBounds(100, 100, 800, 800);
@@ -25,12 +25,9 @@ public class StudentGUI extends JFrame {
         takeExamBtn.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                System.out.println("clicked");
-                setVisible(false);
-                // Assuming ExamsGUI is your frame for taking exams
-                ExamsGUI frame = new ExamsGUI(studentID);
+                ExamsGUI frame = new ExamsGUI();
                 frame.setVisible(true);
-                setVisible(false);
+                dispose();
             }
         });
 
@@ -38,15 +35,13 @@ public class StudentGUI extends JFrame {
         viewGradesBtn.setBounds((getWidth() - 117) / 2, (getHeight() - 40) / 2 + 50, 117, 40);
         contentPane.add(viewGradesBtn);
 
-
 		viewGradesBtn.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 System.out.println("clicked");
-                setVisible(false);
-                StudentGradeViewer frame = new StudentGradeViewer(studentID);
+                StudentGradeViewer frame = new StudentGradeViewer();
                 frame.setVisible(true);
-                setVisible(false);
+                dispose();
             }
         });
     }

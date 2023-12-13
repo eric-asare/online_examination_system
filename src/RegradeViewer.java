@@ -1,16 +1,18 @@
 import javax.swing.*;
+import java.awt.event.*;
 
 public class RegradeViewer extends JFrame {
-    private String requestID;
-    private JLabel studentIDLabel, questionNumberLabel, questionTextLabel, answerLabel, studentAnswerLabel, scoreLabel, teacherFeedbackLabel, fullScoreLabel;
-    private JTextArea answerTextArea, studentAnswerTextArea, scoreField, teacherFeedbackTextArea, studentRequestTextArea, studentScoreText;
+    private JLabel questionNumberLabel, questionTextLabel, answerLabel, studentAnswerLabel, scoreLabel, teacherFeedbackLabel, fullScoreLabel;
+    private JTextArea answerTextArea, studentAnswerTextArea, scoreField, teacherFeedbackTextArea, studentRequestTextArea, studentScoreField;
     private JTextArea questionTextArea;
-    private JButton prevButton, nextButton, submitRegradesButton;
-    private JLabel studentIDValueLabel, questionNumberValueLabel;
+    private JButton rejectRequest, submitButton;
+    private ExamManager exManager;
+    private AnswerManager ansManager;
+    private RegradeManager reManager;
+    private int question_no;
 
-    public RegradeViewer(String requestID) {
-        this.requestID = requestID;
 
+    public RegradeViewer() {
         setTitle("Regrade Viewer");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(800, 900);
@@ -19,23 +21,10 @@ public class RegradeViewer extends JFrame {
         JPanel panel = new JPanel();
         panel.setLayout(null);
 
-        // Student ID Label and Value
-        studentIDLabel = new JLabel("Student ID:");
-        studentIDLabel.setBounds(50, 20, 100, 25);
-        panel.add(studentIDLabel);
-
-        studentIDValueLabel = new JLabel("S1234567"); // Placeholder value
-        studentIDValueLabel.setBounds(160, 20, 100, 25);
-        panel.add(studentIDValueLabel);
-
         // Question Number Label and Value
         questionNumberLabel = new JLabel("Question Number:");
         questionNumberLabel.setBounds(400, 20, 120, 25);
         panel.add(questionNumberLabel);
-
-        questionNumberValueLabel = new JLabel("1"); // Placeholder value
-        questionNumberValueLabel.setBounds(600, 20, 50, 25);
-        panel.add(questionNumberValueLabel);
 
         // Question Text Area (Non-Editable)
         questionTextLabel = new JLabel("Question Text:");
@@ -86,9 +75,9 @@ public class RegradeViewer extends JFrame {
         scoreLabel.setBounds(250, 400, 100, 25);
         panel.add(scoreLabel);
 
-        studentScoreText= new JTextArea();
-        studentScoreText.setBounds(250, 430, 100, 25);
-        panel.add(studentScoreText);
+        studentScoreField= new JTextArea();
+        studentScoreField.setBounds(250, 430, 100, 25);
+        panel.add(studentScoreField);
 
         
         // Student Request Label and Text Area
@@ -103,7 +92,7 @@ public class RegradeViewer extends JFrame {
         panel.add(studentRequestScrollPane);
 
         // Teacher Feedback Label and Text Area
-        teacherFeedbackLabel = new JLabel("Teacher Feedback:");
+        teacherFeedbackLabel = new JLabel("Grader Feedback:");
         teacherFeedbackLabel.setBounds(50, 650, 150, 25);
         panel.add(teacherFeedbackLabel);
 
@@ -112,20 +101,82 @@ public class RegradeViewer extends JFrame {
         teacherFeedbackScrollPane.setBounds(50, 680, 500, 100);
         panel.add(teacherFeedbackScrollPane);
 
-        // Buttons: Prev, Next, Submit Regrades
-        prevButton = new JButton("Prev");
-        prevButton.setBounds(50, 800, 80, 30);
-        panel.add(prevButton);
+        // Buttons: Submit Regrades
 
-        nextButton = new JButton("Next");
-        nextButton.setBounds(150, 800, 80, 30);
-        panel.add(nextButton);
+        rejectRequest = new JButton("Reject Request");
+        rejectRequest.setBounds(150, 800, 150, 30);
+        panel.add(rejectRequest);
 
-        submitRegradesButton = new JButton("Submit Regrades");
-        submitRegradesButton.setBounds(250, 800, 150, 30);
-        panel.add(submitRegradesButton);
+        submitButton = new JButton("Submit Regrade");
+        submitButton.setBounds(300, 800, 150, 30);
+        panel.add(submitButton);
 
         add(panel);
-        setVisible(true);
+        exManager = ExamManager.get();
+        reManager = RegradeManager.get();
+        exManager.open_exam_file();
+        ansManager = AnswerManager.get();
+        ansManager.open_answers_file();
+        reManager.open_request_file();
+      
+        question_no = reManager.getNum(reManager.getRequestID());
+        loadQuestion(question_no);
+
+
+
+        submitButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+                try {
+                    save();
+                    ansManager.submit("Graded");
+                    reManager.submit(question_no, "Regraded");
+                    LoginGUI l = new LoginGUI();
+                    l.setVisible(true);
+                    dispose();
+                } catch (NumberFormatException ex) {
+					JOptionPane.showMessageDialog(null, "Grade must be a positive integer");
+				}
+		
+			}
+		});
+
+        rejectRequest.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+                reManager.submit(question_no, "Rejected");
+                LoginGUI l = new LoginGUI();
+                l.setVisible(true);
+                dispose();
+			}
+		});
     }
+
+    private void loadQuestion(int question_no) {
+		Question q = exManager.getQuestion(question_no);
+        Answer a = ansManager.getAnswer(question_no);
+
+        questionNumberLabel.setText(String.format("Question %d", question_no));
+		questionTextArea.setText(q.getQuestion());
+        answerTextArea.setText(q.getAnswer());
+
+        studentAnswerTextArea.setText(a.getAns());
+		scoreField.setText(Integer.toString(q.getWeight()));
+        teacherFeedbackTextArea.setText(a.getFeedback());
+        studentRequestTextArea.setText(reManager.getRequest());
+        if (a.getGrade() != -1)
+            studentScoreField.setText(Integer.toString(a.getGrade()));
+        else
+            studentScoreField.setText("Ungraded");
+
+	}
+
+
+    private void save() throws NumberFormatException {
+        int g = Integer.parseInt(studentScoreField.getText());
+        if (g<0 || g>exManager.getQuestion(question_no).getWeight())
+            throw new NumberFormatException();
+        ansManager.grade(teacherFeedbackTextArea.getText(), g, question_no); 
+    }
+
 }

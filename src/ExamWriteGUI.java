@@ -238,7 +238,9 @@ public class ExamWriteGUI extends JFrame {
 					int time = Integer.parseInt(JOptionPane.showInputDialog("Input Exam Time (minutes):"));
 					saveQuestion();
 					exManager.submit(name, time);
-					System.exit(0);
+					LoginGUI l = new LoginGUI();
+					l.setVisible(true);
+					dispose();
 				} catch (NumberFormatException ex) {
 					JOptionPane.showMessageDialog(null, "Weight and time must be a positive integer");
 				}

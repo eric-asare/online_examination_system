@@ -3,15 +3,16 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class StudentAnswersViewer extends JFrame {
-    private String selectedExam;
-    private JLabel studentIDLabel, questionNumberLabel, questionTextLabel, answerLabel, studentAnswerLabel, scoreLabel,  requestRegradeLabel, fullScoreLabel, totalScoreLabel;
-    private JTextArea answerTextArea, studentAnswerTextArea, scoreField, studentScoreField, totalScoreField;
+    private JLabel questionNumberLabel, questionTextLabel, answerLabel, studentAnswerLabel, scoreLabel,  requestRegradeLabel, fullScoreLabel, totalScoreLabel;
+    private JTextArea feedbackTextArea, studentAnswerTextArea, scoreField, studentScoreField, totalScoreField;
     private JTextArea questionTextArea, requestRegradeTextArea;
     private JButton prevButton, nextButton, requestRegradeButton;
-    private JLabel studentIDValueLabel, questionNumberValueLabel;
+    private ExamManager exManager;
+    private AnswerManager ansManager;
+    private RegradeManager reManager;
+    private int question_no;
 
-    public StudentAnswersViewer(String selectedExam) {
-        this.selectedExam = selectedExam;
+    public StudentAnswersViewer() {
 
         setTitle("Student Answers Viewer");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -21,23 +22,10 @@ public class StudentAnswersViewer extends JFrame {
         JPanel panel = new JPanel();
         panel.setLayout(null);
 
-        // Student ID Label and Value
-        studentIDLabel = new JLabel("Student ID:");
-        studentIDLabel.setBounds(50, 20, 100, 25);
-        panel.add(studentIDLabel);
-
-        studentIDValueLabel = new JLabel("S1234567"); // Placeholder value
-        studentIDValueLabel.setBounds(160, 20, 100, 25);
-        panel.add(studentIDValueLabel);
-
         // Question Number Label and Value
-        questionNumberLabel = new JLabel("Question Number:");
+        questionNumberLabel = new JLabel("Question Number: 1");
         questionNumberLabel.setBounds(50, 60, 120, 25);
         panel.add(questionNumberLabel);
-
-        questionNumberValueLabel = new JLabel("1"); // Placeholder value
-        questionNumberValueLabel.setBounds(180, 60, 50, 25);
-        panel.add(questionNumberValueLabel);
 
         // Question Text Area (Non-Editable)
         questionTextLabel = new JLabel("Question Text:");
@@ -55,9 +43,9 @@ public class StudentAnswersViewer extends JFrame {
         answerLabel.setBounds(50, 250, 80, 25);
         panel.add(answerLabel);
 
-        answerTextArea = new JTextArea();
-        answerTextArea.setEditable(false);
-        JScrollPane answerScrollPane = new JScrollPane(answerTextArea);
+        feedbackTextArea= new JTextArea();
+        feedbackTextArea.setEditable(false);
+        JScrollPane answerScrollPane = new JScrollPane(feedbackTextArea);
         answerScrollPane.setBounds(50, 280, 500, 50);
         panel.add(answerScrollPane);
 
@@ -73,7 +61,7 @@ public class StudentAnswersViewer extends JFrame {
         panel.add(studentAnswerScrollPane);
 
         // Full Score Label and Text Area
-        fullScoreLabel = new JLabel("Full Score:");
+        fullScoreLabel = new JLabel("Weigth:");
         fullScoreLabel.setBounds(50, 430, 80, 25);
         panel.add(fullScoreLabel);
 
@@ -128,22 +116,31 @@ public class StudentAnswersViewer extends JFrame {
         panel.add(requestRegradeButton);
 
         add(panel);
-
+        
+        exManager = ExamManager.get();
+        exManager.open_exam_file();
+        ansManager = AnswerManager.get();
+        ansManager.open_answers_file();
+        question_no = 1;
+        loadQuestion(question_no);
+        reManager = RegradeManager.get();
 
           // Action Listeners for Prev and Next buttons
         prevButton.addActionListener(new ActionListener() {
-        @Override
-        public void actionPerformed(ActionEvent e) {
-            // Implement logic for handling previous question
-            System.out.println("Previous button clicked");
-        }
-         });
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (question_no != 1) {
+                    loadQuestion(--question_no);
+                }
+            }
+        });
 
         nextButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                // Implement logic for handling next question
-                System.out.println("Next button clicked");
+                if (question_no != exManager.getLength()) {
+					loadQuestion(++question_no);
+				}
             }
         });
 
@@ -151,10 +148,26 @@ public class StudentAnswersViewer extends JFrame {
         requestRegradeButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                // Implement logic for handling request regrade
-                System.out.println("Request Regrade button clicked");
+                reManager.save(requestRegradeTextArea.getText());
+                reManager.submit(question_no, "Unresolved");
             }
         });
     }
+
+    private void loadQuestion(int question_no) {
+		Question q = exManager.getQuestion(question_no);
+        Answer a = ansManager.getAnswer(question_no);
+
+        questionNumberLabel.setText(String.format("Question %d", question_no));
+		questionTextArea.setText(q.getQuestion());
+        feedbackTextArea.setText(a.getFeedback());
+        studentAnswerTextArea.setText(a.getAns());
+        if (a.getGrade() != -1)
+            studentScoreField.setText(Integer.toString(a.getGrade()));
+        else
+            studentScoreField.setText("Ungraded");
+		scoreField.setText(Integer.toString(q.getWeight()));
+        requestRegradeTextArea.setText("");
+	}
 
 }

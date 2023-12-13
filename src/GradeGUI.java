@@ -1,25 +1,22 @@
-import java.util.*;
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class GradeGUI extends JFrame {
-    private JComboBox<String> examSelector;
-    private JComboBox<String> studentSelector;
+    private JComboBox<ExamOption> examSelector;
+    private JComboBox<AnswerOption> studentSelector;
     private JButton selectExamBtn;
     private JButton selectStudentBtn;
-
-    private Map<String, List<String>> examStudentsMap;
+    private ExamManager exManager;
+    private AnswerManager ansManager;
 
     public GradeGUI() {
         setTitle("Grade Papers GUI");
         setSize(800, 800);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setLayout(null);
-
-        examStudentsMap = new HashMap<>();
-        examStudentsMap.put("Exam 1", Arrays.asList("Student 1, 100/100", "Student 2, Ungraded", "Student 3, 90/100"));
-        examStudentsMap.put("Exam 2", Arrays.asList("Student 4, Ungraded", "Student 5, 80/100", "Student 6, 90/100"));
+        
+        ansManager = AnswerManager.get();
 
         int componentWidth = 220;
         int componentHeight = 40;
@@ -31,29 +28,34 @@ public class GradeGUI extends JFrame {
         examLabel.setBounds((getWidth() - componentWidth) / 2, panelVerticalOffset, componentWidth, componentHeight);
         add(examLabel);
 
-        examSelector = new JComboBox<>();
-        examSelector.addItem("Exam 1");
-        examSelector.addItem("Exam 2");
+        exManager = ExamManager.get();
+
+        examSelector = new JComboBox<ExamOption>(exManager.get_exams_display_info());
+
         examSelector.setBounds((getWidth() - componentWidth) / 2, panelVerticalOffset + verticalGap, componentWidth, componentHeight);
         add(examSelector);
+
+        // Student Selection Components
+        JLabel studentLabel = new JLabel("Select Student:");
+        studentLabel.setBounds((getWidth() - componentWidth) / 2, panelVerticalOffset + 4 * verticalGap, componentWidth, componentHeight);
+        add(studentLabel);
+
+        studentSelector = new JComboBox<AnswerOption>();
+        studentSelector.setBounds((getWidth() - componentWidth) / 2, panelVerticalOffset + 5 * verticalGap, componentWidth, componentHeight);
+        add(studentSelector);
+
+        selectStudentBtn = new JButton("Select Student");
 
         selectExamBtn = new JButton("Select Exam");
         selectExamBtn.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                String selectedExam = (String) examSelector.getSelectedItem();
-                System.out.println("Selected Exam: " + selectedExam);
-
-                List<String> students = examStudentsMap.get(selectedExam);
-                if (students != null) {
-                    studentSelector.removeAllItems();
-                    for (String student : students) {
-                        studentSelector.addItem(student);
-                    }
+                
+                IDSetter.get().setExamID(examSelector.getItemAt(examSelector.getSelectedIndex()).getID());
+                studentSelector.removeAllItems();
+                for (AnswerOption a : ansManager.get_answers_display_info()) {
+                    studentSelector.addItem(a);
                 }
-
-                examSelector.setEnabled(false);
-                selectExamBtn.setEnabled(false);
                 studentSelector.setEnabled(true);
                 selectStudentBtn.setEnabled(true);
             }
@@ -61,31 +63,15 @@ public class GradeGUI extends JFrame {
         selectExamBtn.setBounds((getWidth() - componentWidth) / 2, panelVerticalOffset + 2 * verticalGap, componentWidth, componentHeight);
         add(selectExamBtn);
 
-        // Student Selection Components
-        JLabel studentLabel = new JLabel("Select Student:");
-        studentLabel.setBounds((getWidth() - componentWidth) / 2, panelVerticalOffset + 4 * verticalGap, componentWidth, componentHeight);
-        add(studentLabel);
-
-        studentSelector = new JComboBox<>();
-        studentSelector.setEnabled(false);
-        studentSelector.setBounds((getWidth() - componentWidth) / 2, panelVerticalOffset + 5 * verticalGap, componentWidth, componentHeight);
-        add(studentSelector);
-
-        selectStudentBtn = new JButton("Select Student");
-        selectStudentBtn.setEnabled(false);
+   
         selectStudentBtn.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                String selectedStudent = (String) studentSelector.getSelectedItem();
-                System.out.println("Selected Student: " + selectedStudent);
-
-                examSelector.setEnabled(true);
-                selectExamBtn.setEnabled(true);
-                studentSelector.setEnabled(false);
-                selectStudentBtn.setEnabled(false);
+                String studentID = studentSelector.getItemAt(studentSelector.getSelectedIndex()).getID();
+		        IDSetter.get().setStudentID(studentID);
                 GradingGUI frame = new GradingGUI();
                 frame.setVisible(true);
-                setVisible(false);
+                dispose();
 
 
             }

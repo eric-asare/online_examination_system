@@ -1,96 +1,83 @@
+// sho 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.*;
 
 public class RequestViewerGUI extends JFrame {
-    private JComboBox<String> examSelector;
-    private JComboBox<String> studentSelector;
+    private JComboBox<ExamOption> examSelector;
+    private JComboBox<RequestOption> requestSelector;
     private JButton selectExamBtn;
-    private JButton selectStudentBtn;
-
-    private Map<String, List<String>> examStudentsMap;
+    private JButton requestSelectBtn;
+    private ExamManager exManager;
+    private AnswerManager ansManager;
+    private RegradeManager reManager;
 
     public RequestViewerGUI() {
-        setTitle("Request Viewer GUI");
+        setTitle("Requests Viewer GUI");
         setSize(800, 800);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setLayout(null);
 
-        examStudentsMap = new HashMap<>();
-        examStudentsMap.put("Exam 1", Arrays.asList("Student 1, Requested", "Student 2, Approved", "Student 3, Rejected"));
-        examStudentsMap.put("Exam 2", Arrays.asList("Student 4, Rejected", "Student 5, Requested", "Student 6, Requested"));
-
         int componentWidth = 220;
         int componentHeight = 40;
         int verticalGap = 50;
-        int panelVerticalOffset = 150;
+        int panelVerticalOffset = 150; // To create some space at the top
 
         // Exam Selection Components
         JLabel examLabel = new JLabel("Select Exam:");
         examLabel.setBounds((getWidth() - componentWidth) / 2, panelVerticalOffset, componentWidth, componentHeight);
         add(examLabel);
 
-        examSelector = new JComboBox<>();
-        examSelector.addItem("Exam 1");
-        examSelector.addItem("Exam 2");
+        exManager = ExamManager.get();
+
+        examSelector = new JComboBox<ExamOption>(exManager.get_exams_display_info());
+
         examSelector.setBounds((getWidth() - componentWidth) / 2, panelVerticalOffset + verticalGap, componentWidth, componentHeight);
         add(examSelector);
+
+        // Request Selection Components
+        JLabel studentLabel = new JLabel("Select Request:");
+        studentLabel.setBounds((getWidth() - componentWidth) / 2, panelVerticalOffset + 4 * verticalGap, componentWidth, componentHeight);
+        add(studentLabel);
+
+        requestSelector = new JComboBox<RequestOption>();
+        requestSelector.setBounds((getWidth() - componentWidth) / 2, panelVerticalOffset + 5 * verticalGap, componentWidth, componentHeight);
+        add(requestSelector);
+
+        requestSelectBtn = new JButton("Select Request");
 
         selectExamBtn = new JButton("Select Exam");
         selectExamBtn.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                String selectedExam = (String) examSelector.getSelectedItem();
-                System.out.println("Selected Exam: " + selectedExam);
-
-                List<String> students = examStudentsMap.get(selectedExam);
-                if (students != null) {
-                    studentSelector.removeAllItems();
-                    for (String student : students) {
-                        studentSelector.addItem(student);
-                    }
+                reManager = RegradeManager.get();
+                reManager.setExamID(examSelector.getItemAt(examSelector.getSelectedIndex()).getID());
+                requestSelector.removeAllItems();
+                for (RequestOption a : reManager.get_request_display_info()) {
+                    requestSelector.addItem(a);
                 }
-
-                examSelector.setEnabled(false);
-                selectExamBtn.setEnabled(false);
-                studentSelector.setEnabled(true);
-                selectStudentBtn.setEnabled(true);
+                requestSelector.setEnabled(true);
+                requestSelectBtn.setEnabled(true);
             }
         });
         selectExamBtn.setBounds((getWidth() - componentWidth) / 2, panelVerticalOffset + 2 * verticalGap, componentWidth, componentHeight);
         add(selectExamBtn);
 
-        // Student Selection Components
-        JLabel studentLabel = new JLabel("Select Student:");
-        studentLabel.setBounds((getWidth() - componentWidth) / 2, panelVerticalOffset + 4 * verticalGap, componentWidth, componentHeight);
-        add(studentLabel);
-
-        studentSelector = new JComboBox<>();
-        studentSelector.setEnabled(false);
-        studentSelector.setBounds((getWidth() - componentWidth) / 2, panelVerticalOffset + 5 * verticalGap, componentWidth, componentHeight);
-        add(studentSelector);
-
-        selectStudentBtn = new JButton("Select Student");
-        selectStudentBtn.setEnabled(false);
-        selectStudentBtn.addActionListener(new ActionListener() {
+   
+        requestSelectBtn.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                String selectedStudent = (String) studentSelector.getSelectedItem();
-                System.out.println("Selected Student: " + selectedStudent);
-
-                examSelector.setEnabled(true);
-                selectExamBtn.setEnabled(true);
-                studentSelector.setEnabled(false);
-                selectStudentBtn.setEnabled(false);
-                // how do I get the request ID => requestID
-                RegradeViewer frame = new RegradeViewer(selectedStudent);
+                String studentID = requestSelector.getItemAt(requestSelector.getSelectedIndex()).getStudentID();
+                reManager.setRequestID(requestSelector.getItemAt(requestSelector.getSelectedIndex()).getRequestID());
+                IDSetter.get().setStudentID(studentID);
+                IDSetter.get().setExamID(examSelector.getItemAt(examSelector.getSelectedIndex()).getID());
+                RegradeViewer frame = new RegradeViewer();
                 frame.setVisible(true);
-                setVisible(false);
+                dispose();
             }
         });
-        selectStudentBtn.setBounds((getWidth() - componentWidth) / 2, panelVerticalOffset + 6 * verticalGap, componentWidth, componentHeight);
-        add(selectStudentBtn);
+        requestSelectBtn.setBounds((getWidth() - componentWidth) / 2, panelVerticalOffset + 6 * verticalGap, componentWidth, componentHeight);
+        add(requestSelectBtn);
 
         setLocationRelativeTo(null);
     }

@@ -4,6 +4,13 @@ public class Answer {
   private String feedback;
   private int ans_choice;
 
+  public Answer() {
+    ans = "";
+    grade = -1;
+    feedback = "";
+    ans_choice = -1;
+  }
+
   public Answer(String ans, int grade, String feedback) {
     this.ans = ans.replaceAll("\t", "  ");
     this.grade = grade;

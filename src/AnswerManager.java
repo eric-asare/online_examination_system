@@ -29,8 +29,16 @@ public class AnswerManager {
     this.studentID = studentID;
   }
 
+  public String getStudentID() {
+    return studentID;
+  }
+
   public Answer getAnswer(int question_no) {
-    return answers.get(question_no-1);
+    try {
+      return answers.get(question_no-1);
+    } catch (IndexOutOfBoundsException e) {
+      return new Answer();
+    }
   }
 
   public void save(String ans, int question_no, int choice) {
@@ -43,8 +51,17 @@ public class AnswerManager {
   }
 
   public void grade(String feedback, int score, int question_no) {
-    answers.get(question_no-1).setGrade(score);
-    answers.get(question_no-1).setFeedback(feedback);
+    Answer a;
+    try {
+      a = answers.get(question_no-1);
+    } catch (IndexOutOfBoundsException e) {
+      while (answers.size() < question_no) {
+        answers.add(new Answer());
+      }
+      a = answers.get(question_no-1);
+    }
+    a.setGrade(score);
+    a.setFeedback(feedback);
   }
 
   public void submit(String status) {
@@ -56,6 +73,7 @@ public class AnswerManager {
         wr.write(answer.toString());
       }
       wr.close();
+      answers.clear();
     } catch (IOException e) {
       e.printStackTrace();
     }

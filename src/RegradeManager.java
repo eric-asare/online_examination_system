@@ -8,7 +8,7 @@ public class RegradeManager {
     private String studentID;
     private int requestID;
     
-    private Request request;
+    private String request;
     private static ArrayList<Integer> question_numbers;
   
     private RegradeManager() {
@@ -51,23 +51,29 @@ public class RegradeManager {
     public void setRequestID(int requestID) {
         this.requestID = requestID;
     }
+
+    public int getRequestID() {
+        return requestID;
+    }
+
+    public String getRequest() {
+        return request;
+    }
   
     public void save(String request_text) {
-        request = new Request(request_text, "");
+        request = request_text;
     }
-  
-    public void regrade(String feedback) {
-        request.setFeedback(feedback);
-    }
-  
+
     public void submit(int question_no, String status) {
         try {
-            requestID = question_numbers.size();
-            question_numbers.add(question_no);
-            String filepath = String.format("answers/answer_%d_%s.txt", examID, studentID);
+            if (status == "Unresolved") {
+                requestID = question_numbers.size();
+                question_numbers.add(question_no);
+            }
+            String filepath = String.format("requests/request_%d_%s_%d.txt", examID, studentID, requestID);
             FileWriter wr = new FileWriter(filepath);
-            wr.write(String.format("%d\t%s\t", requestID, status));
-            wr.write(request.toString());
+            wr.write(String.format("%s\t%d\t%s\t", studentID, requestID, status));
+            wr.write(request);
             wr.close();
 
             wr = new FileWriter("requestdata.bin", true);
@@ -82,7 +88,7 @@ public class RegradeManager {
         File dir = new File("requests");
         File[] files = dir.listFiles(new FilenameFilter() {
             public boolean accept(File dir, String name) {
-                return name.startsWith("request_") && name.endsWith(".txt");
+                return name.startsWith(String.format("request_%d", examID)) && name.endsWith(".txt");
             }
         });
         RequestOption[] results = new RequestOption[files.length];
@@ -90,12 +96,13 @@ public class RegradeManager {
         for (int i = 0; i < files.length; i++) {
             Scanner sc = null;
             try {
-            sc = new Scanner(files[i]).useDelimiter("\t");
-            int request = sc.nextInt();
-            String status = sc.next();
-            results[i] = new RequestOption(request, status);
+                sc = new Scanner(files[i]).useDelimiter("\t");
+                String student = sc.next();
+                int request = sc.nextInt();
+                String status = sc.next();
+                results[i] = new RequestOption(student, request, status);
             } catch (IOException e) {
-            results[i] = null;
+                results[i] = null;
             } finally {
             if (sc != null) {
                 sc.close();
@@ -115,14 +122,13 @@ public class RegradeManager {
             sc = new Scanner(request_file).useDelimiter("\t");
             sc.next();
             sc.next();
-            String request_text = sc.next();
-            String feedback = sc.next();
-            request = new Request(request_text, feedback);
+            sc.next();
+            request = sc.next();
         } catch (IOException e) {
 
         } finally {
             if (sc != null) {
-            sc.close();
+                sc.close();
             }
         }
     }

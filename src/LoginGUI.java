@@ -79,17 +79,18 @@ public class LoginGUI extends JFrame {
                 if (loginSuccess) {
                     System.out.println("Login Successful Role:" + role);
                     if ("Student".equals(role)) { // Changed: Use .equals for string comparison
-                        StudentGUI s = new StudentGUI(enteredNetID);
+                        StudentGUI s = new StudentGUI();
+		                IDSetter.get().setStudentID(enteredNetID);
                         s.setVisible(true);
-                        setVisible(false);
+                        dispose();
                     } else if ("Teacher".equals(role)) { // Changed: Use .equals for string comparison
                         TeacherGUI tg = new TeacherGUI();
                         tg.setVisible(true);
-                        setVisible(false);
+                        dispose();
                     } else if ("Grader".equals(role)) { // Changed: Use .equals for string comparison
                         GraderGUI gg = new GraderGUI();
                         gg.setVisible(true);
-                        setVisible(false);
+                        dispose();
                     }
                 } else {
                     JOptionPane.showMessageDialog(null, "Login failed! Invalid credentials.");

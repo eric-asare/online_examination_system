@@ -28,31 +28,28 @@ class TeacherGUI extends JFrame {
 
         writeExamsButton.addActionListener(new ActionListener() {
             @Override
-            public void actionPerformed(ActionEvent e) {
-                System.out.println("Hello, my name is Write Exams button");  
+            public void actionPerformed(ActionEvent e) {  
                 ExamWriteGUI examWriterFrame = new ExamWriteGUI();
                 examWriterFrame.setVisible(true);
-                setVisible(false);
+                dispose();
             }
         });
 
         gradePapersButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                System.out.println("Hello, my name is Grade Papers button");
                 GradeGUI frame = new GradeGUI();
                 frame.setVisible(true);
-                setVisible(false);
+                dispose();
             }
         });
 
         viewRegradeRequestsButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                System.out.println("Hello, my name is View Regrade Requests button");
                 RequestViewerGUI frame = new RequestViewerGUI();
                 frame.setVisible(true);
-                setVisible(false);
+                dispose();
             }
         });
 
