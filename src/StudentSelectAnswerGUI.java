@@ -2,11 +2,14 @@ import javax.swing.*;
 import java.awt.*;
 import java.io.*;
 
-public class StudentGradeViewer extends JFrame {
+/**
+ * The class represents the interface where students select the answered exam they have submitted in order to view their grades
+ */
+public class StudentSelectAnswerGUI extends JFrame {
     private String studentID;
 
-    public StudentGradeViewer() {
-        setTitle("Student Grade Viewer");
+    public StudentSelectAnswerGUI() {
+        setTitle("Student Select Answer GUI");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(800, 800);
         setLocationRelativeTo(null);
@@ -31,7 +34,7 @@ public class StudentGradeViewer extends JFrame {
 		        IDSetter.get().setStudentID(studentID);
 				File f = new File(String.format("answers/answer_%d_%s.txt", selectedExam, studentID));
 				if (f.exists()) {
-                    StudentAnswersViewer studentAnswersViewer = new StudentAnswersViewer();
+                    StudentViewAnswerGUI studentAnswersViewer = new StudentViewAnswerGUI();
                     studentAnswersViewer.setVisible(true);
                     dispose();
 				}

@@ -1,10 +1,13 @@
+/**
+ * Class represents a countdown timer to be used during the exam
+ */
 public class Timer {
     private int minutes;
     private boolean isRunning;
     private Thread timerThread;
-    private ExamsGUI display;
+    private TakeExamGUI display;
 
-    public Timer(ExamsGUI display) {
+    public Timer(TakeExamGUI display) {
         this.minutes = 0;
         this.isRunning = false;
         this.display = display;

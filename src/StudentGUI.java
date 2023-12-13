@@ -1,8 +1,11 @@
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.*;
-import javax.swing.border.EmptyBorder; // Import the EmptyBorder class
+import javax.swing.border.EmptyBorder; 
 
+/**
+ * The class represent the starting interface where a Student choose to take exam or view grades. 
+ */
 public class StudentGUI extends JFrame {
 
     private static final long serialVersionUID = 1L;
@@ -25,7 +28,7 @@ public class StudentGUI extends JFrame {
         takeExamBtn.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                ExamsGUI frame = new ExamsGUI();
+                TakeExamGUI frame = new TakeExamGUI();
                 frame.setVisible(true);
                 dispose();
             }
@@ -38,8 +41,7 @@ public class StudentGUI extends JFrame {
 		viewGradesBtn.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                System.out.println("clicked");
-                StudentGradeViewer frame = new StudentGradeViewer();
+                StudentSelectAnswerGUI frame = new StudentSelectAnswerGUI();
                 frame.setVisible(true);
                 dispose();
             }

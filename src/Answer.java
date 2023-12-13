@@ -1,3 +1,7 @@
+/**
+ * Class represents a single answer to a question, storing the student's answer and the grader's grade
+ */
+
 public class Answer {
   private String ans;
   private int grade;

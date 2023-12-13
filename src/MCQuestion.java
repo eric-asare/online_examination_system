@@ -1,3 +1,6 @@
+/**
+ * Class represents the multiple choice question that has to also store the possible choices
+ */
 public class MCQuestion extends Question {
   private String question;
   private String[] answers;

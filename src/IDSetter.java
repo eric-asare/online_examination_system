@@ -1,3 +1,6 @@
+/**
+ * Class sets the IDs for all managers to synchronize
+ */
 public class IDSetter {
     private static IDSetter instance = null;
     private ExamManager exManager;

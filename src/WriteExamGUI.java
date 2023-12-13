@@ -1,6 +1,3 @@
-// TODO : Check user input when Next Button is clicked
-// TODO: when teacher clicks finish, let them type time and exam name
-
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import javax.swing.event.ChangeEvent;
@@ -8,7 +5,10 @@ import javax.swing.event.ChangeListener;
 
 import java.awt.event.*;
 
-public class ExamWriteGUI extends JFrame {
+/**
+ * This class represent the interface for teacher to write exams. 
+ */
+public class WriteExamGUI extends JFrame {
 
 	private static final long serialVersionUID = 1L;
 	private JRadioButton rdbtnMCQ;
@@ -54,8 +54,8 @@ public class ExamWriteGUI extends JFrame {
 	private ExamManager exManager;
 	
 
-	public ExamWriteGUI() {
-		setTitle("Write Exams");
+	public WriteExamGUI() {
+		setTitle("Write Exam GUI");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 800, 800);
 		contentPane = new JPanel();
@@ -263,7 +263,6 @@ public class ExamWriteGUI extends JFrame {
 			String[] answers = new String[slider.getValue()];
 			int ans_choice = -1;
 			for (int i = 0; i < slider.getValue(); i++) {
-				System.out.println(ans_fields[i]);
 				answers[i] = ans_fields[i].getText().replace("\t", "  ");
 				if (ans_buttons[i].isSelected()) {
 					ans_choice = i;

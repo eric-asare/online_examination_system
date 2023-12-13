@@ -2,6 +2,9 @@ import java.util.ArrayList;
 import java.io.*;
 import java.util.Scanner;
 
+/**
+ * Class manages student regrade requests and the question numbers associated with them by loading and saving them to file
+ */
 public class RegradeManager {
     private static RegradeManager instance = null;
     private int examID;

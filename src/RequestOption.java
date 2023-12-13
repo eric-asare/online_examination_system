@@ -1,3 +1,6 @@
+/**
+ * Class represents the identifying info for a request file for selection
+ */
 public class RequestOption {
     private String studentID;
     private int requestID;

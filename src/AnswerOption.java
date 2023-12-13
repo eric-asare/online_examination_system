@@ -1,3 +1,6 @@
+/**
+ * Class represents the identifying info for an answer file for selection
+ */
 public class AnswerOption {
     private String studentID;
     private String status;

@@ -4,6 +4,9 @@ import java.awt.event.ActionListener;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 
+/**
+ * Class represents the starting interface where a Grader choose to grade papers or view regrade requests. 
+ */
 public class GraderGUI extends JFrame {
 
     private static final long serialVersionUID = 1L;
@@ -29,8 +32,7 @@ public class GraderGUI extends JFrame {
         gradePapersBtn.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                System.out.println("Grading papers...");
-                GradeGUI frame = new GradeGUI();
+                GraderSelectAnswerGUI frame = new GraderSelectAnswerGUI();
                 frame.setVisible(true);
                 dispose();
             }
@@ -43,8 +45,7 @@ public class GraderGUI extends JFrame {
         viewRegradeRequestsBtn.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                System.out.println("Viewing regrade requests...");
-                RequestViewerGUI frame = new RequestViewerGUI();
+                SelectRequestGUI frame = new SelectRequestGUI();
                 frame.setVisible(true);
                 dispose();
             }

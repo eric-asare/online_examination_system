@@ -2,6 +2,9 @@ import java.util.ArrayList;
 import java.io.*;
 import java.util.Scanner;
 
+/**
+ * Class manages exam content by loading and saving them to file
+ */
 public class ExamManager {
 
   private static ExamManager instance = null;
@@ -63,7 +66,6 @@ public class ExamManager {
     try {
       File exam = new File(filepath);
       sc = new Scanner(exam).useDelimiter("\t");
-      System.out.println("Hello");
       sc.next();
       sc.next();
       while (sc.hasNext()) {
@@ -74,7 +76,6 @@ public class ExamManager {
           String answer = sc.next();
           Question q = new TextQuestion(question, answer, weight);
           questions.add(q);
-          System.out.println(q.toString());
         }
         else {
           int weight = sc.nextInt();
@@ -87,7 +88,6 @@ public class ExamManager {
           int ans_choice = sc.nextInt();
           Question q = new MCQuestion(question, answers, ans_choice, weight);
           questions.add(q);
-          System.out.println(q.toString());
         }
       }
     } catch (IOException e) {

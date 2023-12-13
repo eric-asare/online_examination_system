@@ -2,6 +2,10 @@ import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+/**
+ * This class represent the interface for Teacher to select where to write an exam,
+ *  grade student papers or view regrade requests. 
+ */
 class TeacherGUI extends JFrame {
     private JButton writeExamsButton;
     private JButton gradePapersButton;
@@ -29,7 +33,7 @@ class TeacherGUI extends JFrame {
         writeExamsButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {  
-                ExamWriteGUI examWriterFrame = new ExamWriteGUI();
+                WriteExamGUI examWriterFrame = new WriteExamGUI();
                 examWriterFrame.setVisible(true);
                 dispose();
             }
@@ -38,7 +42,7 @@ class TeacherGUI extends JFrame {
         gradePapersButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                GradeGUI frame = new GradeGUI();
+                GraderSelectAnswerGUI frame = new GraderSelectAnswerGUI();
                 frame.setVisible(true);
                 dispose();
             }
@@ -47,7 +51,7 @@ class TeacherGUI extends JFrame {
         viewRegradeRequestsButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                RequestViewerGUI frame = new RequestViewerGUI();
+                SelectRequestGUI frame = new SelectRequestGUI();
                 frame.setVisible(true);
                 dispose();
             }

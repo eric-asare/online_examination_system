@@ -2,19 +2,21 @@ import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class StudentAnswersViewer extends JFrame {
-    private JLabel questionNumberLabel, questionTextLabel, answerLabel, studentAnswerLabel, scoreLabel,  requestRegradeLabel, fullScoreLabel, totalScoreLabel;
-    private JTextArea feedbackTextArea, studentAnswerTextArea, scoreField, studentScoreField, totalScoreField;
-    private JTextArea questionTextArea, requestRegradeTextArea;
-    private JButton prevButton, nextButton, requestRegradeButton;
+/**
+ * Class represents the interface for the Grader to actually grade answers submitted by students. 
+ */
+public class GradeAnswerGUI extends JFrame {
+    private JLabel questionNumberLabel, questionTextLabel, answerLabel, studentAnswerLabel, scoreLabel, feedbackLabel, fullScoreLabel;
+    private JTextArea answerTextArea, studentAnswerTextArea, scoreField, studentScoreField;
+    private JTextArea questionTextArea, feedbackTextArea;
+    private JButton prevButton, nextButton, submitButton;
     private ExamManager exManager;
     private AnswerManager ansManager;
-    private RegradeManager reManager;
     private int question_no;
+ 
 
-    public StudentAnswersViewer() {
-
-        setTitle("Student Answers Viewer");
+    public GradeAnswerGUI() {
+        setTitle("Grade Answer GUI");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(800, 800);
         setLocationRelativeTo(null);
@@ -23,7 +25,7 @@ public class StudentAnswersViewer extends JFrame {
         panel.setLayout(null);
 
         // Question Number Label and Value
-        questionNumberLabel = new JLabel("Question Number: 1");
+        questionNumberLabel = new JLabel("Question Number:");
         questionNumberLabel.setBounds(50, 60, 120, 25);
         panel.add(questionNumberLabel);
 
@@ -43,14 +45,14 @@ public class StudentAnswersViewer extends JFrame {
         answerLabel.setBounds(50, 250, 80, 25);
         panel.add(answerLabel);
 
-        feedbackTextArea= new JTextArea();
-        feedbackTextArea.setEditable(false);
-        JScrollPane answerScrollPane = new JScrollPane(feedbackTextArea);
+        answerTextArea = new JTextArea();
+        answerTextArea.setEditable(false);
+        JScrollPane answerScrollPane = new JScrollPane(answerTextArea);
         answerScrollPane.setBounds(50, 280, 500, 50);
         panel.add(answerScrollPane);
 
         // Student Answer Label and Text Area
-        studentAnswerLabel = new JLabel("Your Answer:");
+        studentAnswerLabel = new JLabel("Student Answer:");
         studentAnswerLabel.setBounds(50, 340, 120, 25);
         panel.add(studentAnswerLabel);
 
@@ -61,7 +63,7 @@ public class StudentAnswersViewer extends JFrame {
         panel.add(studentAnswerScrollPane);
 
         // Full Score Label and Text Area
-        fullScoreLabel = new JLabel("Weigth:");
+        fullScoreLabel = new JLabel("Weight:");
         fullScoreLabel.setBounds(50, 430, 80, 25);
         panel.add(fullScoreLabel);
 
@@ -71,27 +73,25 @@ public class StudentAnswersViewer extends JFrame {
         panel.add(scoreField);
 
         // Student Score Label and Text Area
-        scoreLabel = new JLabel("Your Score:");
+        scoreLabel = new JLabel("Student Score:");
         scoreLabel.setBounds(50, 500, 120, 25);
         panel.add(scoreLabel);
 
         studentScoreField = new JTextArea();
         studentScoreField.setBounds(50, 530, 100, 25);
-        studentScoreField.setEditable(false);
         panel.add(studentScoreField);
 
+        // Feedback Label and Text Area
+        feedbackLabel = new JLabel("Feedback:");
+        feedbackLabel.setBounds(50, 570, 80, 25);
+        panel.add(feedbackLabel);
 
-        // Student Score Label and Text Area
-        totalScoreLabel = new JLabel("Total Score:");
-        totalScoreLabel.setBounds(600, 60, 120, 25);
-        panel.add(totalScoreLabel);
-    
-        totalScoreField = new JTextArea();
-        totalScoreField.setBounds(700, 60, 80, 25);
-        totalScoreField.setEditable(false);
-        panel.add(totalScoreField);
+        feedbackTextArea = new JTextArea();
+        JScrollPane feedbackScrollPane = new JScrollPane(feedbackTextArea);
+        feedbackScrollPane.setBounds(50, 600, 500, 100);
+        panel.add(feedbackScrollPane);
 
-        // Buttons: Prev, Next, Request Regrade
+        // Buttons: Prev, Next, Submit
         prevButton = new JButton("Prev");
         prevButton.setBounds(50, 720, 80, 30);
         panel.add(prevButton);
@@ -100,58 +100,66 @@ public class StudentAnswersViewer extends JFrame {
         nextButton.setBounds(150, 720, 80, 30);
         panel.add(nextButton);
 
-
-        requestRegradeLabel = new JLabel("Request Regrade:");
-        requestRegradeLabel.setBounds(50, 570, 120, 25);
-        panel.add(requestRegradeLabel);
-
-        requestRegradeTextArea = new JTextArea();
-        JScrollPane requestRegradeScrollPane = new JScrollPane(requestRegradeTextArea);
-        requestRegradeScrollPane.setBounds(50, 600, 500, 100);
-        panel.add(requestRegradeScrollPane);
-
-        // Submit All Grades button changed to Request Regrade
-        requestRegradeButton = new JButton("Request Regrade");
-        requestRegradeButton.setBounds(250, 720, 150, 30);
-        panel.add(requestRegradeButton);
+        submitButton = new JButton("Submit All Grades");
+        submitButton.setBounds(250, 720, 150, 30);
+        submitButton.setEnabled(false);
+        panel.add(submitButton);
 
         add(panel);
-        
+
         exManager = ExamManager.get();
         exManager.open_exam_file();
         ansManager = AnswerManager.get();
         ansManager.open_answers_file();
         question_no = 1;
         loadQuestion(question_no);
-        reManager = RegradeManager.get();
-
-          // Action Listeners for Prev and Next buttons
-        prevButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                if (question_no != 1) {
-                    loadQuestion(--question_no);
-                }
-            }
-        });
-
         nextButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if (question_no != exManager.getLength()) {
-					loadQuestion(++question_no);
+                try {
+                    if (question_no != exManager.getLength()) {
+                        save();
+                        loadQuestion(++question_no);
+                        if (question_no == exManager.getLength()) {
+                            submitButton.setEnabled(true);
+                        }
+                    }
+                } catch (NumberFormatException ex) {
+					JOptionPane.showMessageDialog(null, "Grade must be a non-negative integer");
 				}
             }
         });
 
-        // Action Listener for Request Regrade button
-        requestRegradeButton.addActionListener(new ActionListener() {
+        prevButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                reManager.save(requestRegradeTextArea.getText());
-                reManager.submit(question_no, "Unresolved");
+                try {
+                    if (question_no != 1) {
+                        save();
+                        loadQuestion(--question_no);
+                    }
+                } catch (NumberFormatException ex) {
+					JOptionPane.showMessageDialog(null, "Grade must be a non-negative integer");
+				}
             }
         });
+
+		submitButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+                try {
+                    save();
+                    ansManager.submit("Graded");
+                    LoginGUI l = new LoginGUI();
+                    l.setVisible(true);
+                    dispose();
+                } catch (NumberFormatException ex) {
+					JOptionPane.showMessageDialog(null, "Grade must be a positive integer");
+				}
+		
+			}
+		});
+
     }
 
     private void loadQuestion(int question_no) {
@@ -160,14 +168,22 @@ public class StudentAnswersViewer extends JFrame {
 
         questionNumberLabel.setText(String.format("Question %d", question_no));
 		questionTextArea.setText(q.getQuestion());
-        feedbackTextArea.setText(a.getFeedback());
+        answerTextArea.setText(q.getAnswer());
+
         studentAnswerTextArea.setText(a.getAns());
+		scoreField.setText(Integer.toString(q.getWeight()));
+        feedbackTextArea.setText(a.getFeedback());
         if (a.getGrade() != -1)
             studentScoreField.setText(Integer.toString(a.getGrade()));
         else
             studentScoreField.setText("Ungraded");
-		scoreField.setText(Integer.toString(q.getWeight()));
-        requestRegradeTextArea.setText("");
+
 	}
 
+    private void save() throws NumberFormatException {
+        int g = Integer.parseInt(studentScoreField.getText());
+        if (g<0 || g>exManager.getQuestion(question_no).getWeight())
+            throw new NumberFormatException();
+        ansManager.grade(feedbackTextArea.getText(), g, question_no); 
+    }
 }

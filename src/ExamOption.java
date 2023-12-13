@@ -1,3 +1,6 @@
+/**
+ * Class represents the identifying info for an exam file for selection
+ */
 public class ExamOption {
     private int examID;
     private int time;

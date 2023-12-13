@@ -1,1 +1,1 @@
-st	Ungraded	type Answer ..	-1		Bird	-1		
+st	Graded	100	1	Wrong Answer	Bird	100	Well done	

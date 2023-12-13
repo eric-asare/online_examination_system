@@ -1,15 +1,15 @@
-// TODO: Check if student have taken the exam already , don't spin it
-
 import java.awt.BorderLayout;
 import javax.swing.border.EmptyBorder;
 
 import javax.swing.*;
 import java.awt.event.*;
 
-import java.util.ArrayList;
 import java.io.*;
 
-public class ExamsGUI extends JFrame {
+/**
+ * This class represent the interface for Student to take Exam
+ */
+public class TakeExamGUI extends JFrame {
 
 	private static final long serialVersionUID = 1L;
 	private JTextField weight;
@@ -54,7 +54,7 @@ public class ExamsGUI extends JFrame {
 
 	private Timer timer;
 
-	public ExamsGUI() {
+	public TakeExamGUI() {
 		setTitle("Take Exams");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 800, 800);

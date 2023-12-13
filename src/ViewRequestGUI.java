@@ -1,7 +1,10 @@
 import javax.swing.*;
 import java.awt.event.*;
 
-public class RegradeViewer extends JFrame {
+/**
+ * This class represents the interface where a Grader views the student submitted request. 
+ */
+public class ViewRequestGUI extends JFrame {
     private JLabel questionNumberLabel, questionTextLabel, answerLabel, studentAnswerLabel, scoreLabel, teacherFeedbackLabel, fullScoreLabel;
     private JTextArea answerTextArea, studentAnswerTextArea, scoreField, teacherFeedbackTextArea, studentRequestTextArea, studentScoreField;
     private JTextArea questionTextArea;
@@ -12,8 +15,8 @@ public class RegradeViewer extends JFrame {
     private int question_no;
 
 
-    public RegradeViewer() {
-        setTitle("Regrade Viewer");
+    public ViewRequestGUI() {
+        setTitle("View Request GUI");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(800, 900);
         setLocationRelativeTo(null);

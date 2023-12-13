@@ -5,6 +5,9 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 
+/**
+ * 
+ */
 public class LoginGUI extends JFrame {
     private JTextField netIDField; // Changed: Field for Net ID
     private JPasswordField passwordField;
@@ -77,7 +80,6 @@ public class LoginGUI extends JFrame {
                 }
 
                 if (loginSuccess) {
-                    System.out.println("Login Successful Role:" + role);
                     if ("Student".equals(role)) { // Changed: Use .equals for string comparison
                         StudentGUI s = new StudentGUI();
 		                IDSetter.get().setStudentID(enteredNetID);

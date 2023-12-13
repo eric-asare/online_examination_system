@@ -2,6 +2,9 @@ import java.io.*;
 import java.util.ArrayList;
 import java.util.Scanner;
 
+/**
+ * Class manages student answers and the grades associated with them by loading and saving them to file
+ */
 public class AnswerManager {
   
   private static AnswerManager instance = null;
