@@ -15,10 +15,6 @@ public class StudentSelectAnswerGUI extends JFrame {
         setLocationRelativeTo(null);
         studentID = AnswerManager.get().getStudentID();
 
-        createExamList();
-    }
-
-    private void createExamList() {
         ExamManager exManager = ExamManager.get();
         JList<ExamOption> examList = new JList<ExamOption>(exManager.get_exams_display_info());
         examList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
@@ -46,6 +42,5 @@ public class StudentSelectAnswerGUI extends JFrame {
 
         add(listScrollPane);
     }
-
 }
 
