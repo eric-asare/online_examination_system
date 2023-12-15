@@ -26,12 +26,12 @@ public class StudentSelectAnswerGUI extends JFrame {
         examList.addListSelectionListener(e -> {
             if (!e.getValueIsAdjusting()) {
                 int selectedExam = examList.getSelectedValue().getID();
-                IDSetter.get().setExamID(selectedExam);
 		File f = new File(String.format("answers/answer_%d_%s.txt", selectedExam, studentID));
 		if (f.exists()) {
-                    StudentViewAnswerGUI studentAnswersViewer = new StudentViewAnswerGUI();
-                    studentAnswersViewer.setVisible(true);
-                    dispose();
+			IDSetter.get().setExamID(selectedExam);
+                    	StudentViewAnswerGUI studentAnswersViewer = new StudentViewAnswerGUI();
+                    	studentAnswersViewer.setVisible(true);
+                    	dispose();
 		}
 		else {
 			JOptionPane.showMessageDialog(null, "Haven't Taken Exam");
