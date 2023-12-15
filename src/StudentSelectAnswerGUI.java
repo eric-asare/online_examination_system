@@ -27,16 +27,15 @@ public class StudentSelectAnswerGUI extends JFrame {
             if (!e.getValueIsAdjusting()) {
                 int selectedExam = examList.getSelectedValue().getID();
                 IDSetter.get().setExamID(selectedExam);
-		        IDSetter.get().setStudentID(studentID);
-				File f = new File(String.format("answers/answer_%d_%s.txt", selectedExam, studentID));
-				if (f.exists()) {
+		File f = new File(String.format("answers/answer_%d_%s.txt", selectedExam, studentID));
+		if (f.exists()) {
                     StudentViewAnswerGUI studentAnswersViewer = new StudentViewAnswerGUI();
                     studentAnswersViewer.setVisible(true);
                     dispose();
-				}
-				else {
-					JOptionPane.showMessageDialog(null, "Haven't Taken Exam");
-				}
+		}
+		else {
+			JOptionPane.showMessageDialog(null, "Haven't Taken Exam");
+		}
             }
         });
 
