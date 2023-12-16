@@ -11,6 +11,8 @@ public class GraderGUI extends JFrame {
 
     private static final long serialVersionUID = 1L;
     private JPanel contentPane;
+    private JButton gradePapersBtn;
+    private JButton viewRegradeRequestsBtn;
 
     public GraderGUI() {
         setTitle("Grader GUI");
@@ -24,8 +26,8 @@ public class GraderGUI extends JFrame {
 
         int buttonWidth = 200;
         int buttonHeight = 50;
-
-        JButton gradePapersBtn = new JButton("Grade Papers");
+        
+        gradePapersBtn = new JButton("Grade Papers");
         gradePapersBtn.setBounds((800 - buttonWidth) / 2, (800 - buttonHeight) / 2 - 50, buttonWidth, buttonHeight);
         contentPane.add(gradePapersBtn);
 
@@ -38,7 +40,7 @@ public class GraderGUI extends JFrame {
             }
         });
 
-        JButton viewRegradeRequestsBtn = new JButton("View Regrade Requests");
+        viewRegradeRequestsBtn = new JButton("View Regrade Requests");
         viewRegradeRequestsBtn.setBounds((800 - buttonWidth) / 2, (800 - buttonHeight) / 2 + 50, buttonWidth, buttonHeight);
         contentPane.add(viewRegradeRequestsBtn);
 

@@ -10,6 +10,8 @@ public class StudentGUI extends JFrame {
 
     private static final long serialVersionUID = 1L;
     private JPanel contentPane;
+    private JButton takeExamBtn;
+    private JButton viewGradesBtn;
 
     public StudentGUI() {
         setTitle("Student GUI");
@@ -21,7 +23,7 @@ public class StudentGUI extends JFrame {
         setContentPane(contentPane);
         contentPane.setLayout(null);
 
-        JButton takeExamBtn = new JButton("Take Exam");
+        takeExamBtn = new JButton("Take Exam");
         takeExamBtn.setBounds((getWidth() - 117) / 2, (getHeight() - 40) / 2 - 50, 117, 40);
         contentPane.add(takeExamBtn);
 
@@ -34,7 +36,7 @@ public class StudentGUI extends JFrame {
             }
         });
 
-        JButton viewGradesBtn = new JButton("View Grades");
+        viewGradesBtn = new JButton("View Grades");
         viewGradesBtn.setBounds((getWidth() - 117) / 2, (getHeight() - 40) / 2 + 50, 117, 40);
         contentPane.add(viewGradesBtn);
 

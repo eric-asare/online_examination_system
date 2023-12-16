@@ -7,6 +7,8 @@ import java.io.*;
  */
 public class StudentSelectAnswerGUI extends JFrame {
     private String studentID;
+    private JList<ExamOption> examList;
+    private ExamManager exManager;
 
     public StudentSelectAnswerGUI() {
         setTitle("Student Select Answer GUI");
@@ -15,8 +17,8 @@ public class StudentSelectAnswerGUI extends JFrame {
         setLocationRelativeTo(null);
         studentID = AnswerManager.get().getStudentID();
 
-        ExamManager exManager = ExamManager.get();
-        JList<ExamOption> examList = new JList<ExamOption>(exManager.get_exams_display_info());
+        exManager = ExamManager.get();
+        examList = new JList<ExamOption>(exManager.get_exams_display_info());
         examList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         examList.setLayoutOrientation(JList.VERTICAL);
 

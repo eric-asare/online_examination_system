@@ -12,7 +12,7 @@ public class RegradeManager {
     private int requestID;
     
     private String request;
-    private static ArrayList<Integer> question_numbers;
+    private ArrayList<Integer> question_numbers;
   
     private RegradeManager() {
         question_numbers = new ArrayList<Integer>();

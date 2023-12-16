@@ -7,9 +7,9 @@ import java.awt.event.ActionListener;
  *  grade student papers or view regrade requests. 
  */
 class TeacherGUI extends JFrame {
-    private JButton writeExamsButton;
-    private JButton gradePapersButton;
-    private JButton viewRegradeRequestsButton;
+    private JButton writeExamsBtn;
+    private JButton gradePapersBtn;
+    private JButton viewRegradeRequestsBtn;
 
     // Constructor
     TeacherGUI() {
@@ -22,15 +22,15 @@ class TeacherGUI extends JFrame {
         int buttonWidth = 200;
         int buttonHeight = 50;
 
-        writeExamsButton = new JButton("Write Exams");
-        gradePapersButton = new JButton("Grade Papers");
-        viewRegradeRequestsButton = new JButton("View Regrade Requests");
+        writeExamsBtn = new JButton("Write Exams");
+        gradePapersBtn = new JButton("Grade Papers");
+        viewRegradeRequestsBtn = new JButton("View Regrade Requests");
 
-        writeExamsButton.setBounds((800 - buttonWidth) / 2, (800 - buttonHeight) / 2 - 50, buttonWidth, buttonHeight);
-        gradePapersButton.setBounds((800 - buttonWidth) / 2, (800 - buttonHeight) / 2 + 20, buttonWidth, buttonHeight);
-        viewRegradeRequestsButton.setBounds((800 - buttonWidth) / 2, (800 - buttonHeight) / 2 + 90, buttonWidth, buttonHeight);
+        writeExamsBtn.setBounds((800 - buttonWidth) / 2, (800 - buttonHeight) / 2 - 50, buttonWidth, buttonHeight);
+        gradePapersBtn.setBounds((800 - buttonWidth) / 2, (800 - buttonHeight) / 2 + 20, buttonWidth, buttonHeight);
+        viewRegradeRequestsBtn.setBounds((800 - buttonWidth) / 2, (800 - buttonHeight) / 2 + 90, buttonWidth, buttonHeight);
 
-        writeExamsButton.addActionListener(new ActionListener() {
+        writeExamsBtn.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {  
                 WriteExamGUI examWriterFrame = new WriteExamGUI();
@@ -39,7 +39,7 @@ class TeacherGUI extends JFrame {
             }
         });
 
-        gradePapersButton.addActionListener(new ActionListener() {
+        gradePapersBtn.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 GraderSelectAnswerGUI frame = new GraderSelectAnswerGUI();
@@ -48,7 +48,7 @@ class TeacherGUI extends JFrame {
             }
         });
 
-        viewRegradeRequestsButton.addActionListener(new ActionListener() {
+        viewRegradeRequestsBtn.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 SelectRequestGUI frame = new SelectRequestGUI();
@@ -57,9 +57,9 @@ class TeacherGUI extends JFrame {
             }
         });
 
-        add(writeExamsButton);
-        add(gradePapersButton);
-        add(viewRegradeRequestsButton);
+        add(writeExamsBtn);
+        add(gradePapersBtn);
+        add(viewRegradeRequestsBtn);
 
         setLocationRelativeTo(null);
     }
