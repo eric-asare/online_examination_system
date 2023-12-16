@@ -1,0 +1,405 @@
+<diagram program="umletino" version="15.1"><zoom_level>2</zoom_level><help_text>Space for diagram notesan</help_text><element><id>UMLClass</id><coordinates><x>358</x><y>38</y><w>74</w><h>120</h></coordinates><panel_attributes>TakeExamGUI
+--
+- takeExamBtn : JButton
+- viewGradesBtn : JButton
+- weight: JTextField
+- ans_choice_1: JTextField
+- ans_choice_2: JTextField
+- ans_choice_3: JTextField
+- ans_choice_4: JTextField
+- timerField: JTextArea
+- contentPane: JPanel
+- questionPanel: JPanel
+- TextPanel: JPanel
+- MCQPanel: JPanel
+- lblQuesnum: Jlabel
+- question_no: int
+- lblWeight: JLabel
+- rdbtnNewRadioButton: JRadioButton
+- rdbtnNewRadioButton_1: JRadioButton
+- rdbtnNewRadioButton_2: JRadioButton
+- rdbtnNewRadioButton_3: JRadioButton
+- choices: ButtonGroup
+- ans_buttons[]: JRadioButton
+- ans_fields[]: JTextField
+- question_box: JTextArea
+- txtrTypeAnswer: JTextArea
+- btnNext: JButton
+- btnPrev: JButton
+- btnFinish: JButton
+- selectionPanel: JPanel
+- optionsList: JList&lt;ExamOption&gt;
+- exManager: ExamManager
+- ansManager: AnswerManager
+- timer: Timer
+--
+- takeExam(examID: int, studentID: String, time: int): void
+- finish(): void
+- setTime( seconds: int): void
+- save( question_no: int) : void
+- loadQuestion (question_no: int): void
+
+</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>260</x><y>278</y><w>42</w><h>20</h></coordinates><panel_attributes>StudentGUI
+--
+- takeExamBtn : JButton
+- viewGradesBtn : JButton
+--
+</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>150</x><y>614</y><w>42</w><h>20</h></coordinates><panel_attributes>TeacherGUI
+--
+- writeExamsBtn : JButton
+- gradePapersBtn : JButton
+- viewRegradeRequestsBtn : JButton
+--
+</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>314</x><y>500</y><w>42</w><h>76</h></coordinates><panel_attributes>ViewRequestsGUI
+--
+- questionNumberLabel: JLabel
+- questionTextLabel: JLabel
+- answerLabel: JLabel
+- studentAnswerLabel: JLabel
+- scoreLabel: JLabel
+- teacherFeedbackLabel: JLabel
+- fullScoreLabel: JLabel
+- answerTextArea: JTextArea
+- studentAnswerTextArea: JTextArea
+- scoreField: JTextArea
+- teacherFeedbackTextArea: JTextArea
+- studentRequestTextArea: JTextArea
+- studentScoreField: JTextArea
+- questionTextArea: JTextArea
+- rejectRequest: JButton
+- submitButton: JButton
+- exManager: ExamManager
+- ansManager: AnswerManager
+- reManager: RegradeManager
+- question_no: int
+--
+- loadQuestion( question_no: int): void
+- save() : void
+
+</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>412</x><y>598</y><w>74</w><h>106</h></coordinates><panel_attributes>WriteExamGUI
+--
+- rdbtnMCQ: JRadioButton
+- rdbtnText: JRadioButton
+- btnNextQuestion: JButton
+- btnFinish: JButton
+- typeGroup: ButtonGroup
+- typeListener: ActionListener
+- weight: JTextField
+- ans_choice_1: JTextField
+- ans_choice_2: JTextField
+- ans_choice_3: JTextField
+- ans_choice_4: JTextField
+- contentPane: JPanel
+- selectionPanel: JPanel
+- TextPanel: JPanel
+- MCQPanel: JPanel
+- nextFinishPanel: JPanel
+- lblQuesNum: JLabel
+- question_no: int
+- writeQuestion: JTextArea
+- lblWeight: JLabel
+- rdbtnNewRadioButton: JRadioButton
+- rdbtnNewRadioButton_1: JRadioButton
+- rdbtnNewRadioButton_2: JRadioButton
+- rdbtnNewRadioButton_3: JRadioButton
+- choices: ButtonGroup
+- ans_buttons: JRadioButton[]
+- ans_fields: JTextField[]
+- slider: JSlider
+- lblNumOfAns: JLabel
+- txtrTypeAnswer: JTextArea
+- exManager: ExamManager
+--
+- saveQuestion() : void
+
+
+</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>404</x><y>206</y><w>44</w><h>18</h></coordinates><panel_attributes>StudentSelectAnswerGUI
+--
+- studentID: String
+- exManager: ExamManager
+- examList: JComboBox&lt;ExamOption&gt;
+--
+
+
+
+</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>368</x><y>254</y><w>74</w><h>84</h></coordinates><panel_attributes>StudentViewAnswerGUI
+--
+- questionNumberLabel: JLabel
+- questionTextLabel: JLabel
+- answerLabel: JLabel
+- studentAnswerLabel: JLabel
+- scoreLabel: JLabel
+- requestRegradeLabel: JLabel
+- fullScoreLabel: JLabel
+- totalScoreLabel: JLabel
+- feedbackTextArea: JTextArea
+- studentAnswerTextArea: JTextArea
+- scoreField: JTextArea
+- studentScoreField: JTextArea
+- totalScoreField: JTextArea
+- questionTextArea: JTextArea
+- requestRegradeTextArea: JTextArea
+- prevButton: JButton
+- nextButton: JButton
+- requestRegradeButton: JButton
+- exitButton: JButton
+- exManager: ExamManager
+- ansManager: AnswerManager
+- reManager: RegradeManager
+- question_no: int
+--
+- loadQuestion(question_no: int) : void
+- totalGrade(): String
+
+
+</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>424</x><y>544</y><w>58</w><h>28</h></coordinates><panel_attributes>SelectRequestGUI
+--
+- examSelector: JComboBox&lt;ExamOption&gt;
+- requestSelector: JComboBox&lt;RequestOption&gt;
+- selectExamBtn: JButton
+- requestSelectBtn: JButton
+- exManager: ExamManager
+- reManager: RegradeManager
+--
+
+
+
+</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>188</x><y>346</y><w>42</w><h>20</h></coordinates><panel_attributes>LoginGUI
+--
+- netIDField : JTextField
+- passwordField : JPasswordField
+--
+_+ main( args: String[])_
+
+</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>674</x><y>246</y><w>30</w><h>42</h></coordinates><panel_attributes>Answer
+--
+-ans: String
+-grade: int
+-feedback: String
+-ans_choice: int
+--
++getAns(): String
++getGrade(): int
++getFeedback(): String
++getAnsChoice(): int
++setGrade(int): void
++setFeedback(String): void
++setChoice(int): void
++toString(): String</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>730</x><y>404</y><w>30</w><h>26</h></coordinates><panel_attributes>/Question/
+--
+
+--
+/+getQuestion(): String/
+/+getAnswer(): String/
+/+getWeight(): int/
+/+getChoices(): String[]/
+/+toString(): String/</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>702</x><y>468</y><w>30</w><h>34</h></coordinates><panel_attributes>MCQuestion
+--
+-question: String
+-answers: String[]
+-ans_choice: int
+-weight: int
+--
++getQuestion(): String
++getAnswer(): String
++getWeight(): int
++getChoices(): String[]
++toString(): String</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>756</x><y>472</y><w>30</w><h>30</h></coordinates><panel_attributes>TextQuestion
+--
+-question: String
+-answer: String
+-weight: int
+--
++getQuestion(): String
++getAnswer(): String
++getWeight(): int
++getChoices(): String[]
++toString(): String</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>720</x><y>428</y><w>28</w><h>44</h></coordinates><panel_attributes>lt=&lt;&lt;-</panel_attributes><additional_attributes>120;10;120;140;10;140;10;200</additional_attributes></element><element><id>Relation</id><coordinates><x>742</x><y>428</y><w>34</w><h>48</h></coordinates><panel_attributes>lt=&lt;&lt;-</panel_attributes><additional_attributes>10;10;10;140;150;140;150;220</additional_attributes></element><element><id>UMLClass</id><coordinates><x>624</x><y>362</y><w>46</w><h>46</h></coordinates><panel_attributes>ExamManager
+--
+_-instance: ExamManager_
+-examID: int
+-questions: ArrayList&lt;Question&gt;
+-exams: ArrayList&lt;String&gt;
+--
+_+get(): ExamManager_
++getName(): String
++setID(int): void
++save(Question): void
++getQuestion(int): Question
++getLength(): int
++open_exam_file: void
++submit(String, int): void
++get_exams_display_info: ExamOption[]</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>668</x><y>388</y><w>66</w><h>30</h></coordinates><panel_attributes>lt=&lt;&lt;&lt;&lt;-</panel_attributes><additional_attributes>10;10;310;130</additional_attributes></element><element><id>UMLClass</id><coordinates><x>604</x><y>248</y><w>50</w><h>48</h></coordinates><panel_attributes>AnswerManager
+--
+_-instance: AnswerManager_
+-examID: int
+-studentID: String
+-answers: ArrayList&lt;Answer&gt;
+--
+_+get(): AnswerManager_
++setExamID(int): void
++setStudentID(String): void
++getStudentID(): String
++getAnswer(int): Answer
++save(String, int, int): void
++grade(String, int, int): void
++open_answers_file: void
++submit(String): void
++get_answers_display_info: AnswerOption[]</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>652</x><y>262</y><w>26</w><h>12</h></coordinates><panel_attributes>lt=&lt;&lt;&lt;&lt;-</panel_attributes><additional_attributes>10;40;110;10</additional_attributes></element><element><id>UMLClass</id><coordinates><x>610</x><y>478</y><w>50</w><h>54</h></coordinates><panel_attributes>RegradeManager
+--
+_-instance: RegradeManager_
+-examID: int
+-studentID: String
+-requestID:int
+-request: String
+-question_numbers: ArrayList&lt;Integer&gt;
+--
+_+get(): RegradeManager_
++setExamID(int): void
++setStudentID(String): void
++setRequestID(int): void
++getRequestID(): int
++getRequest(): String
++save(String): void
++open_request_file: void
++submit(int, String): void
++get_request_display_info: RequestOption[]</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>668</x><y>354</y><w>66</w><h>22</h></coordinates><panel_attributes>lt=&lt;-</panel_attributes><additional_attributes>10;90;310;10</additional_attributes></element><element><id>Relation</id><coordinates><x>652</x><y>278</y><w>82</w><h>82</h></coordinates><panel_attributes>lt=&lt;-</panel_attributes><additional_attributes>10;10;390;390</additional_attributes></element><element><id>Relation</id><coordinates><x>658</x><y>354</y><w>76</w><h>140</h></coordinates><panel_attributes>lt=&lt;-</panel_attributes><additional_attributes>10;680;360;10</additional_attributes></element><element><id>UMLClass</id><coordinates><x>618</x><y>430</y><w>34</w><h>24</h></coordinates><panel_attributes>ExamOption
+--
+-examID: int
+-time: int
+-exManager: ExamManager
+--
++getID(): int
++getTime(): int
++toString(): String</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>568</x><y>190</y><w>36</w><h>24</h></coordinates><panel_attributes>AnswerOption
+--
+-studentID: String
+-status: String
+-ansManager: AnswerManager
+--
++getID(): String
++getStatus(): String
++toString(): String</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>586</x><y>572</y><w>36</w><h>30</h></coordinates><panel_attributes>RequestOption
+--
+-studentID: String
+-requestID: int
+-status: String
+-ansManager: AnswerManager
+--
++getStudentID(): String
++getRequestID(): int
++getStatus(): String
++toString(): String</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>600</x><y>530</y><w>40</w><h>46</h></coordinates><panel_attributes>lt=&lt;-</panel_attributes><additional_attributes>180;10;10;210</additional_attributes></element><element><id>Relation</id><coordinates><x>582</x><y>212</y><w>50</w><h>40</h></coordinates><panel_attributes>lt=&lt;-</panel_attributes><additional_attributes>230;180;10;10</additional_attributes></element><element><id>Relation</id><coordinates><x>628</x><y>406</y><w>8</w><h>28</h></coordinates><panel_attributes>lt=&lt;-</panel_attributes><additional_attributes>20;10;10;120</additional_attributes></element><element><id>UMLClass</id><coordinates><x>486</x><y>54</y><w>30</w><h>30</h></coordinates><panel_attributes>Timer
+--
+-minutes: int
+-isRunning: boolean
+-timerThread: Thread
+-display: TakeExamGUI
+--
++setMinutes(int): void
++start(): void
+-displayTime(int): void
++stop(): void</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>730</x><y>336</y><w>36</w><h>28</h></coordinates><panel_attributes>IDSetter
+--
+_-instance: IDSetter_
+-exManager: ExamManager
+-ansManager: AnswerManager
+-reManager: RequestManager
+--
++setExamID(int): void
++setStudentID(String): void
++setRequestID(int): void</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>216</x><y>434</y><w>42</w><h>20</h></coordinates><panel_attributes>GraderGUI
+--
+- gradePapersBtn : JButton
+- viewRegradeRequestsBtn : JButton
+--
+</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>350</x><y>348</y><w>54</w><h>72</h></coordinates><panel_attributes>GradeAnswersGUI
+--
+- questionNumberLabel: JLabel
+- questionTextLabel: JLabel
+- answerLabel: JLabel
+- studentAnswerLabel: JLabel
+- scoreLabel: JLabel
+- feedbackLabel: JLabel
+- fullScoreLabel: JLabel
+- answerTextArea: JTextArea
+- studentAnswerTextArea: JTextArea
+- scoreField: JTextArea
+- studentScoreField: JTextArea
+- questionTextArea: JTextArea
+- feedbackTextArea: JTextArea
+- prevButton: JButton
+- nextButton: JButton
+- submitButton: JButton
+- exManager: ExamManager
+- ansManager: AnswerManager
+- question_no: int
+--
+- loadQuestion( question_no: int): void
+- save() : void
+
+</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>344</x><y>432</y><w>58</w><h>30</h></coordinates><panel_attributes>GraderSelectAnswerGUI
+--
+- examSelector: JComboBox&lt;ExamOption&gt;
+- studentSelector: JComboBox&lt;AnswerOption&gt;
+- selectExamBtn: JButton
+- selectStudentBtn: JButton
+- exManager: ExamManager
+- ansManager: AnswerManager
+--
+
+
+
+</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>300</x><y>156</y><w>94</w><h>128</h></coordinates><panel_attributes>lt=&lt;.
+&lt;&lt;instantiates&gt;&gt;
+
+</panel_attributes><additional_attributes>450;10;10;620</additional_attributes></element><element><id>Relation</id><coordinates><x>300</x><y>210</y><w>108</w><h>80</h></coordinates><panel_attributes>lt=&lt;.
+&lt;&lt;instantiates&gt;&gt;
+</panel_attributes><additional_attributes>520;10;10;380</additional_attributes></element><element><id>Relation</id><coordinates><x>406</x><y>222</y><w>30</w><h>36</h></coordinates><panel_attributes>lt=&lt;.
+&lt;&lt;instantiates&gt;&gt;
+
+</panel_attributes><additional_attributes>10;160;90;10</additional_attributes></element><element><id>Relation</id><coordinates><x>190</x><y>460</y><w>158</w><h>166</h></coordinates><panel_attributes>lt=&lt;.
+&lt;&lt;instantiates&gt;&gt;
+</panel_attributes><additional_attributes>770;10;10;810</additional_attributes></element><element><id>Relation</id><coordinates><x>164</x><y>628</y><w>252</w><h>12</h></coordinates><panel_attributes>lt=&lt;.
+&lt;&lt;instantiates&gt;&gt;
+
+</panel_attributes><additional_attributes>1240;10;10;30</additional_attributes></element><element><id>Relation</id><coordinates><x>228</x><y>330</y><w>144</w><h>22</h></coordinates><panel_attributes>lt=&lt;.
+&lt;&lt;instantiates&gt;&gt;
+
+</panel_attributes><additional_attributes>10;90;700;10</additional_attributes></element><element><id>Relation</id><coordinates><x>360</x><y>418</y><w>26</w><h>18</h></coordinates><panel_attributes>lt=&lt;.
+&lt;&lt;instantiates&gt;&gt;
+</panel_attributes><additional_attributes>60;10;10;70</additional_attributes></element><element><id>Relation</id><coordinates><x>220</x><y>354</y><w>134</w><h>16</h></coordinates><panel_attributes>lt=&lt;.
+&lt;&lt;instantiates&gt;&gt;
+</panel_attributes><additional_attributes>10;60;650;10</additional_attributes></element><element><id>Relation</id><coordinates><x>228</x><y>352</y><w>90</w><h>170</h></coordinates><panel_attributes>lt=&lt;.
+&lt;&lt;instantiates&gt;&gt;
+
+</panel_attributes><additional_attributes>10;10;430;830</additional_attributes></element><element><id>Relation</id><coordinates><x>256</x><y>440</y><w>92</w><h>10</h></coordinates><panel_attributes>lt=&lt;.
+&lt;&lt;instantiates&gt;&gt;
+</panel_attributes><additional_attributes>440;30;10;10</additional_attributes></element><element><id>Relation</id><coordinates><x>256</x><y>440</y><w>202</w><h>108</h></coordinates><panel_attributes>lt=&lt;.
+&lt;&lt;instantiates&gt;&gt;
+</panel_attributes><additional_attributes>990;520;10;10</additional_attributes></element><element><id>Relation</id><coordinates><x>186</x><y>354</y><w>22</w><h>264</h></coordinates><panel_attributes>lt=&lt;.
+&lt;&lt;instantiates&gt;&gt;
+</panel_attributes><additional_attributes>20;1300;10;10</additional_attributes></element><element><id>Relation</id><coordinates><x>186</x><y>296</y><w>96</w><h>64</h></coordinates><panel_attributes>lt=&lt;.
+&lt;&lt;instantiates&gt;&gt;
+</panel_attributes><additional_attributes>460;10;10;300</additional_attributes></element><element><id>Relation</id><coordinates><x>198</x><y>364</y><w>44</w><h>74</h></coordinates><panel_attributes>lt=&lt;.
+&lt;&lt;instantiates&gt;&gt;
+
+
+
+</panel_attributes><additional_attributes>200;350;10;10</additional_attributes></element><element><id>Relation</id><coordinates><x>354</x><y>558</y><w>74</w><h>18</h></coordinates><panel_attributes>lt=&lt;.
+&lt;&lt;instantiates&gt;&gt;
+</panel_attributes><additional_attributes>10;70;350;10</additional_attributes></element><element><id>Relation</id><coordinates><x>354</x><y>258</y><w>254</w><h>296</h></coordinates><panel_attributes>lt=&lt;-</panel_attributes><additional_attributes>1250;10;10;1460</additional_attributes></element><element><id>Relation</id><coordinates><x>400</x><y>258</y><w>208</w><h>178</h></coordinates><panel_attributes>lt=&lt;-</panel_attributes><additional_attributes>1020;10;10;870</additional_attributes></element><element><id>Relation</id><coordinates><x>402</x><y>258</y><w>206</w><h>124</h></coordinates><panel_attributes>lt=&lt;-</panel_attributes><additional_attributes>1010;10;10;600</additional_attributes></element><element><id>Relation</id><coordinates><x>440</x><y>258</y><w>168</w><h>24</h></coordinates><panel_attributes>lt=&lt;-</panel_attributes><additional_attributes>820;10;10;100</additional_attributes></element><element><id>Relation</id><coordinates><x>430</x><y>90</y><w>178</w><h>174</h></coordinates><panel_attributes>lt=&lt;-</panel_attributes><additional_attributes>870;850;10;10</additional_attributes></element><element><id>Relation</id><coordinates><x>354</x><y>502</y><w>260</w><h>52</h></coordinates><panel_attributes>lt=&lt;-</panel_attributes><additional_attributes>1280;10;10;240</additional_attributes></element><element><id>Relation</id><coordinates><x>440</x><y>276</y><w>174</w><h>232</h></coordinates><panel_attributes>lt=&lt;-</panel_attributes><additional_attributes>850;1140;10;10</additional_attributes></element><element><id>Relation</id><coordinates><x>480</x><y>502</y><w>134</w><h>46</h></coordinates><panel_attributes>lt=&lt;-</panel_attributes><additional_attributes>650;10;10;210</additional_attributes></element><element><id>Relation</id><coordinates><x>354</x><y>384</y><w>274</w><h>170</h></coordinates><panel_attributes>lt=&lt;-</panel_attributes><additional_attributes>1350;10;10;830</additional_attributes></element><element><id>Relation</id><coordinates><x>402</x><y>376</y><w>226</w><h>14</h></coordinates><panel_attributes>lt=&lt;-</panel_attributes><additional_attributes>1110;50;10;10</additional_attributes></element><element><id>Relation</id><coordinates><x>480</x><y>384</y><w>148</w><h>164</h></coordinates><panel_attributes>lt=&lt;-</panel_attributes><additional_attributes>720;10;10;800</additional_attributes></element><element><id>Relation</id><coordinates><x>484</x><y>384</y><w>144</w><h>246</h></coordinates><panel_attributes>lt=&lt;-</panel_attributes><additional_attributes>700;10;10;1210</additional_attributes></element><element><id>Relation</id><coordinates><x>400</x><y>384</y><w>228</w><h>52</h></coordinates><panel_attributes>lt=&lt;-</panel_attributes><additional_attributes>1120;10;10;240</additional_attributes></element><element><id>Relation</id><coordinates><x>440</x><y>276</y><w>188</w><h>114</h></coordinates><panel_attributes>lt=&lt;-</panel_attributes><additional_attributes>920;550;10;10</additional_attributes></element><element><id>Relation</id><coordinates><x>430</x><y>90</y><w>198</w><h>300</h></coordinates><panel_attributes>lt=&lt;-</panel_attributes><additional_attributes>970;1480;10;10</additional_attributes></element><element><id>Relation</id><coordinates><x>190</x><y>564</y><w>238</w><h>62</h></coordinates><panel_attributes>lt=&lt;.
+&lt;&lt;instantiates&gt;&gt;
+</panel_attributes><additional_attributes>1170;10;10;290</additional_attributes></element><element><id>Relation</id><coordinates><x>446</x><y>210</y><w>182</w><h>180</h></coordinates><panel_attributes>lt=&lt;-</panel_attributes><additional_attributes>890;880;10;10</additional_attributes></element><element><id>Relation</id><coordinates><x>480</x><y>552</y><w>110</w><h>36</h></coordinates><panel_attributes>lt=&lt;.
+&lt;&lt;uses&gt;&gt;
+</panel_attributes><additional_attributes>530;160;10;10</additional_attributes></element><element><id>Relation</id><coordinates><x>400</x><y>438</y><w>222</w><h>10</h></coordinates><panel_attributes>lt=&lt;.
+&lt;&lt;uses&gt;&gt;
+</panel_attributes><additional_attributes>1090;20;10;30</additional_attributes></element><element><id>Relation</id><coordinates><x>400</x><y>212</y><w>172</w><h>236</h></coordinates><panel_attributes>lt=&lt;.
+&lt;&lt;uses&gt;&gt;
+</panel_attributes><additional_attributes>840;10;10;1160</additional_attributes></element><element><id>Relation</id><coordinates><x>446</x><y>210</y><w>176</w><h>236</h></coordinates><panel_attributes>lt=&lt;.
+&lt;&lt;uses&gt;&gt;
+</panel_attributes><additional_attributes>860;1160;10;10</additional_attributes></element><element><id>Relation</id><coordinates><x>480</x><y>440</y><w>142</w><h>118</h></coordinates><panel_attributes>lt=&lt;.
+&lt;&lt;uses&gt;&gt;
+</panel_attributes><additional_attributes>690;10;10;570</additional_attributes></element><element><id>Relation</id><coordinates><x>430</x><y>154</y><w>192</w><h>292</h></coordinates><panel_attributes>lt=&lt;.
+&lt;&lt;uses&gt;&gt;
+</panel_attributes><additional_attributes>940;1440;10;10</additional_attributes></element><element><id>Relation</id><coordinates><x>430</x><y>66</y><w>60</w><h>8</h></coordinates><panel_attributes>lt=&lt;-</panel_attributes><additional_attributes>280;20;10;10</additional_attributes></element><element><id>Relation</id><coordinates><x>430</x><y>72</y><w>60</w><h>8</h></coordinates><panel_attributes>lt=&lt;-</panel_attributes><additional_attributes>10;10;280;20</additional_attributes></element></diagram>
